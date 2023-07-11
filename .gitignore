@@ -1,0 +1,6 @@
+/**/node_modules
+/**/.yarn
+/**/.exercism
+/**/.eslintignore
+/**/.eslintrc.cjs
+/**/.yarnrc.yml
