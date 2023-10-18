@@ -16,11 +16,9 @@ validate_equal_length() {
 main() {
   validate_usage "$@"
   validate_equal_length "$@"
-  first_strand=($(echo "$1" | grep -o .))
-  second_strand=($(echo "$2" | grep -o .))
   hamming_distance=0
-  for ((i = 0; i < "${#first_strand[@]}"; i++)); do
-    if [[ "${first_strand[i]}" != "${second_strand[i]}" ]]; then
+  for ((i = 0; i < "${#1}"; i++)); do
+    if [[ "${1:i:1}" != "${2:i:1}" ]]; then
       ((hamming_distance++))
     fi
   done
