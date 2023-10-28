@@ -4,12 +4,8 @@ class LocomotiveEngineer
   end
 
   def self.fix_list_of_wagons(each_wagons_id, missing_wagons)
-    [
-      each_wagons_id[2],
-      *missing_wagons,
-      *each_wagons_id[3..],
-      *each_wagons_id[0...2]
-    ]
+    first, second, third, *rest = each_wagons_id
+    [third, *missing_wagons, *rest, first, second]
   end
 
   def self.add_missing_stops(route, **stops)
