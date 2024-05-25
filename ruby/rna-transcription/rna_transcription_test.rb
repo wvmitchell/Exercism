@@ -3,6 +3,7 @@ require_relative 'rna_transcription'
 
 class RnaTranscriptionTest < Minitest::Test
   def test_empty_rna_sequence
+    # skip
     assert_equal '', Complement.of_dna('')
   end
 

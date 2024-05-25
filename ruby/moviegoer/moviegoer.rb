@@ -8,16 +8,13 @@ class Moviegoer
     @member = member
   end
 
-  def ticket_price
-    @age < 60 ? 15 : 10
-  end
+  def ticket_price = @age > 59 ? 10 : 15
 
-  def watch_scary_movie?
-    @age > 17 ? true : false
-  end
+  def watch_scary_movie? = @age > 17
 
-  # Popcorn is 🍿
   def claim_free_popcorn!
-    @member ? "🍿" : (raise NotMovieClubMemberError)
+    raise NotMovieClubMemberError, 'No 🍿!' unless @member
+
+    '🍿'
   end
 end

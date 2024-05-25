@@ -171,13 +171,13 @@ class ClockTest < Minitest::Test
   def test_clocks_a_minute_apart
     clock1 = Clock.new(hour: 15, minute: 36)
     clock2 = Clock.new(hour: 15, minute: 37)
-    refute clock1 == clock2
+    refute_equal clock1, clock2
   end
 
   def test_clocks_an_hour_apart
     clock1 = Clock.new(hour: 14, minute: 37)
     clock2 = Clock.new(hour: 15, minute: 37)
-    refute clock1 == clock2
+    refute_equal clock1, clock2
   end
 
   def test_clocks_with_hour_overflow

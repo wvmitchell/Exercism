@@ -3,6 +3,7 @@ require_relative 'resistor_color_duo'
 
 class ResistorColorDuoTest < Minitest::Test
   def test_brown_and_black
+    # skip
     assert_equal 10, ResistorColorDuo.value(%w[brown black])
   end
 

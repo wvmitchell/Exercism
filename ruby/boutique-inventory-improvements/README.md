@@ -94,7 +94,7 @@ BoutiqueInventory.new([
 ```
 
 
-Refactor `total_stock` to use the new block shortcut you've learnt rather than hashes.
+Refactor `total_stock` to use the openstruct's method, rather than referencing a hash.
 As a reminder, the method should return::
 
 ```ruby

@@ -1,6 +1,21 @@
 module TwelveDays
-  GIFT_STATEMENTS = [
-    'a Partridge in a Pear Tree.',
+  GIFT_RANGES = {
+    'first' => 0..0,
+    'second' => 0..1,
+    'third' => 0..2,
+    'fourth' => 0..3,
+    'fifth' => 0..4,
+    'sixth' => 0..5,
+    'seventh' => 0..6,
+    'eighth' => 0..7,
+    'ninth' => 0..8,
+    'tenth' => 0..9,
+    'eleventh' => 0..10,
+    'twelfth' => 0..11
+  }.freeze
+
+  GIFTS = [
+    'and a Partridge in a Pear Tree',
     'two Turtle Doves',
     'three French Hens',
     'four Calling Birds',
@@ -14,34 +29,11 @@ module TwelveDays
     'twelve Drummers Drumming'
   ].freeze
 
-  GIFT_COUNTS = {
-    first: 1,
-    second: 2,
-    third: 3,
-    fourth: 4,
-    fifth: 5,
-    sixth: 6,
-    seventh: 7,
-    eighth: 8,
-    ninth: 9,
-    tenth: 10,
-    eleventh: 11,
-    twelfth: 12
-  }.freeze
-
   def self.song
-    lyrics = GIFT_COUNTS.map do |day, count|
-      "On the #{day} day of Christmas my true love gave to me: #{gifts(count)}"
-    end.join("\n\n")
-    "#{lyrics}\n"
-  end
-
-  def self.gifts(count)
-    if count < 2
-      GIFT_STATEMENTS[0]
-    else
-      GIFT_STATEMENTS[1...count].reverse.join(', ') +
-        ", and #{GIFT_STATEMENTS[0]}"
-    end
+    GIFT_RANGES.map do |day, range|
+      gifts = "#{GIFTS[range].reverse.join(', ')}."
+      gifts = day == 'first' ? gifts.gsub('and ', '') : gifts
+      "On the #{day} day of Christmas my true love gave to me: #{gifts}\n"
+    end.join("\n")
   end
 end

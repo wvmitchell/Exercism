@@ -1,7 +1,5 @@
 module Acronym
-  extend self
-
-  def abbreviate(text)
-    text.scan(/\b\w/).join.upcase
+  def self.abbreviate(phrase)
+    phrase.scan(/\b\w/).join.upcase
   end
 end

@@ -1,71 +1,62 @@
 module Tournament
-  STARTING_RECORD = {MP: 0, W: 0, D: 0, L: 0, P: 0}
-
   def self.tally(input)
-    matches = input.split("\n")
-    results = matches.reduce({}) do |in_prog, match|
-      match_details = match.split(";")
-      case match_details[2]
-      when 'win'
-        in_prog = record_win(match_details[0], in_prog)
-        in_prog = record_loss(match_details[1], in_prog)
-      when 'loss'
-        in_prog = record_win(match_details[1], in_prog)
-        in_prog = record_loss(match_details[0], in_prog)
+    results = parse_input(input).sort do |a, b|
+      a_points = a[1][:P].to_i
+      b_points = b[1][:P].to_i
+
+      if a_points == b_points
+        a[0] <=> b[0]
       else
-        in_prog = record_draw(match_details[0], in_prog)
-        in_prog = record_draw(match_details[1], in_prog)
+        b_points <=> a_points
       end
     end
+    header + format_results(results)
+  end
 
-    results = sort_results(results)
+  def self.header
+    team_header = format("%-31s", "Team")
+    summary_header = "| MP |  W |  D |  L |  P\n"
+    team_header + summary_header
+  end
 
-    output = "%-31s|%3s |%3s |%3s |%3s |%3s\n" %
-      ['Team', 'MP', 'W', 'D', 'L', 'P']
+  def self.parse_input(input)
+    summary = {}
+    default = { MP: 0, W: 0, D: 0, L: 0, P: 0 }
 
-    results.each do |team, record|
-      output += print_result(team, record)
+    input.split("\n").each_with_object(summary) do |result, in_prog|
+      team_one, team_two, outcome = result.split(';')
+      in_prog[team_one] = default.dup unless in_prog[team_one]
+      in_prog[team_two] = default.dup unless in_prog[team_two]
+      in_prog[team_one][:MP] += 1
+      in_prog[team_two][:MP] += 1
+
+      case outcome
+      when "win"
+        in_prog[team_one][:W] += 1
+        in_prog[team_one][:P] += 3
+        in_prog[team_two][:L] += 1
+      when "loss"
+        in_prog[team_two][:W] += 1
+        in_prog[team_two][:P] += 3
+        in_prog[team_one][:L] += 1
+      when "draw"
+        in_prog[team_one][:D] += 1
+        in_prog[team_two][:D] += 1
+        in_prog[team_one][:P] += 1
+        in_prog[team_two][:P] += 1
+      end
     end
-
-    output
   end
 
-  private
-  def self.record_win(team, season)
-    season[team] = STARTING_RECORD.clone if !season[team]
-    season[team][:MP] += 1
-    season[team][:W] += 1
-    season[team][:P] += 3
-    season
-  end
-
-  def self.record_loss(team, season)
-    season[team] = STARTING_RECORD.clone if !season[team]
-    season[team][:MP] += 1
-    season[team][:L] += 1
-    season
-  end
-
-  def self.record_draw(team, season)
-    season[team] = STARTING_RECORD.clone if !season[team]
-    season[team][:MP] += 1
-    season[team][:D] += 1
-    season[team][:P] += 1
-    season
-  end
-
-  def self.sort_results(results)
-    sorted = results.sort_by{|team, record| [-record[:P], team]}
-    sorted.to_h
-  end
-
-  def self.print_result(team, record)
-    "%-31s|%3d |%3d |%3d |%3d |%3d\n" % 
-      [team,
-      record[:MP],
-      record[:W],
-      record[:D],
-      record[:L],
-      record[:P]]
+  def self.format_results(results)
+    results.map do |team, result_summary|
+      format "%-30s |%3s |%3s |%3s |%3s |%3s\n",
+             team,
+             result_summary[:MP],
+             result_summary[:W],
+             result_summary[:D],
+             result_summary[:L],
+             result_summary[:P]
+    end.join("")
   end
 end

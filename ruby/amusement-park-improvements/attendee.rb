@@ -14,11 +14,11 @@ class Attendee
   # Do not edit above methods, add your own methods below.
 
   def has_pass?
-    @pass_id
+    !!@pass_id
   end
 
   def fits_ride?(ride_minimum_height)
-    @height >= ride_minimum_height
+    ride_minimum_height <= @height
   end
 
   def allowed_to_ride?(ride_minimum_height)

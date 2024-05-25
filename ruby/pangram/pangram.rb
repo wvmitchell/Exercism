@@ -1,5 +1,7 @@
-module Pangram
-  def self.pangram?(test)
-    Set.new(test.downcase.scan(/[a-z]/)).length === 26
-  end
-end
+=begin
+Write your code for the 'Pangram' exercise in this file. Make the tests in
+`pangram_test.rb` pass.
+
+To get started with TDD, see the `README.md` file in your
+`ruby/pangram` directory.
+=end

@@ -1,6 +1,3 @@
-# frozen_string_literal: true
-
-# Just an inventory system
 class BoutiqueInventory
   def initialize(items)
     @items = items
@@ -15,22 +12,22 @@ class BoutiqueInventory
   end
 
   def out_of_stock
-    items.select { |item| item_stock(item).zero? }
+    items.select do |item|
+      item[:quantity_by_size].sum { |_, v| v }.zero?
+    end
   end
 
   def stock_for_item(name)
-    items.find { |i| i[:name] == name }.fetch(:quantity_by_size)
+    items.find { |item| item[:name] == name }[:quantity_by_size]
   end
 
   def total_stock
-    items.sum { |item| item_stock(item) }
+    items.sum do |item|
+      item[:quantity_by_size].sum { |_, quantity| quantity }
+    end
   end
 
   private
 
   attr_reader :items
-
-  def item_stock(item)
-    item[:quantity_by_size].sum { |_, count| count }
-  end
 end
