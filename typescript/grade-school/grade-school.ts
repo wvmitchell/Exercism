@@ -1,33 +1,31 @@
-interface Students {
-  [key: number]: string[]
+interface Roster {
+  [key: string]: string[]
 }
 
 export class GradeSchool {
-  private _roster: Students = {}
+  _roster: Roster = {}
 
-  roster(): Students {
-    let rosterCopy: Students = {}
-    for(const [grade, students] of Object.entries(this._roster)) {
-      rosterCopy[parseInt(grade)] = [...students] 
-    }
-    return rosterCopy
+  roster(): Roster {
+    return JSON.parse(JSON.stringify(this._roster))
   }
 
-  add(name: string, grade: number): void {
-    this.removeFromGrades(name)
-    const studentsForGrade = this._roster[grade] || [] 
-    this._roster[grade] = [...studentsForGrade, name].sort()
+  add(name: string, level: number): void {
+    this._roster[level] ??= []
+    const studentsForLevel = this._roster[level]
+    this.remove(name)
+
+    this._roster[level] = [...studentsForLevel, name].sort()
   }
 
-  grade(gradeLevel: number): string[] {
-    return this.roster()[gradeLevel] || [] 
+  grade(level: number): string[] {
+    return this.roster()[level] ?? []
   }
 
-  removeFromGrades(name: string): void {
-    for(const grade in this._roster) {
-      if(this._roster[grade].includes(name)) {
-        this._roster[grade].splice(this._roster[grade].indexOf(name))
-      }
+  private remove(name: string): void {
+    for(const level in this._roster) {
+      this._roster[level] = this._roster[level].filter(student => {
+        return student !== name
+      })
     }
   }
 }

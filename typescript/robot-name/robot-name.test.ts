@@ -1,10 +1,10 @@
 import { Robot } from './robot-name'
 
 const areSequential = (name1: string, name2: string): boolean => {
-  const alpha1 = name1.substr(0, 2)
-  const alpha2 = name2.substr(0, 2)
-  const num1 = Number(name1.substr(2, 3))
-  const num2 = Number(name2.substr(2, 3))
+  const alpha1 = name1.substring(0, 2)
+  const alpha2 = name2.substring(0, 2)
+  const num1 = Number(name1.substring(2, 5))
+  const num2 = Number(name2.substring(2, 5))
 
   const numDiff = num2 - num1
   const alphaDiff =
@@ -128,7 +128,7 @@ describe('Robot', () => {
   //
   // This test doesn't run on our online test runner because it will time-out
   // with most implementations. It's up to you to test your solution locally.
-  it.skip('all the names can be generated', () => {
+  it('all the names can be generated', () => {
     const usedNames = new Set()
     usedNames.add(robot.name)
 

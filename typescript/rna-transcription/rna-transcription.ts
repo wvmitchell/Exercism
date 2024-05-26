@@ -1,17 +1,19 @@
-interface NucPair {
+interface T {
   [key: string]: string
 }
 
-const NucMap: NucPair = {
+const Transcriptions: T = {
   C: 'G',
   G: 'C',
   A: 'U',
   T: 'A'
 }
 
-export function toRna(dna_str: string): string {
-  if(/[^CGAT]/.test(dna_str)) {
-    throw new Error('Invalid input DNA.')
-  }
-  return dna_str.replace(/[CGAT]/g, match => NucMap[match])
+export function toRna(dna: string): string {
+  return dna.replace(/[A-Z]/g, (match: string): string => {
+    if(!Transcriptions[match]) {
+      throw('Invalid input DNA.')
+    }
+    return Transcriptions[match]
+  })
 }

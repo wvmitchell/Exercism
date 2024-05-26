@@ -1,29 +1,22 @@
-export function commands(secret: number): string[] {
-  const commandList = [
-    'wink',
-    'double blink', 
-    'close your eyes',
-    'jump',
-    'reverse'
-  ]
+const SECRET_COMMANDS = [
+  'wink',
+  'double blink',
+  'close your eyes',
+  'jump'
+]
 
-  const binarySecret = secret
-                        .toString(2)
-                        .padStart(commandList.length, '0')
-                        .split('')
-                        .reverse()
+export function commands(command: number): string[] {
+  const rawCommands =  command
+                          .toString(2)
+                          .padStart(5, '0')
+                          .split('')
+                          .reverse()
+  const actions = rawCommands.slice(0,4)
+  const shouldReverse = rawCommands[4] === '1'
 
-  return binarySecret.reduce((list: string[], state, index) => {
-    let command = commandList[index]
-    let shouldReverse = state === '1' && command === 'reverse'
-    let includesCommand = state === '1'
+  const actionList = SECRET_COMMANDS.filter((_, index) => {
+    return actions[index] === '1'
+  })
 
-    if(shouldReverse) {
-      return list.reverse()
-    } else if(includesCommand) {
-      return [...list, command]
-    } else {
-      return list
-    }
-  }, [])
+  return shouldReverse ? actionList.reverse() : actionList
 }

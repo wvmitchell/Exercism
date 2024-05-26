@@ -1,19 +1,45 @@
-const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+const LETTERS = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ']
+const TOTAL_NUMBER_OF_NAMES = 26 * 26 * 1000
 
-export class Robot {
-  private _name: string
-  private static _prefixIndex = 0
-  private static _integerValue = 0
-  private static _integerStart = 0
-
-  readonly PREFIXES = Array.from(letters).map(letter_a => {
-    return Array.from(letters).map(letter_b => {
-      return `${letter_a}${letter_b}`
-    })
-  }).flat()
+class RobotDB {
+  _availableSerialNumbers: string[]
 
   constructor() {
-    this._name = this.makeNewName()
+    this._availableSerialNumbers = this.generateAllSerialNumbers()
+  }
+
+  public getSerialNumber(): string {
+    const index = Math.floor(Math.random() * this._availableSerialNumbers.length)
+    const serial = this._availableSerialNumbers[index]
+    const lastSerial = this._availableSerialNumbers.pop()
+    if(serial !== lastSerial) {
+      this._availableSerialNumbers[index] = lastSerial || ''
+    }
+    return serial
+  }
+
+  private generateAllSerialNumbers(): string[] {
+    let serialNumbers: string[]  = []
+
+    LETTERS.forEach(f => {
+      LETTERS.forEach(s => {
+        for(let i = 0; i < 1000; i++) {
+          serialNumbers.push(`${f}${s}${i.toString().padStart(3, '0')}`)
+        }
+      })
+    })
+
+    return serialNumbers
+  }
+}
+
+const DB = new RobotDB()
+
+export class Robot {
+  _name: string
+
+  constructor() {
+    this._name = this.createName()
   }
 
   public get name(): string {
@@ -21,30 +47,13 @@ export class Robot {
   }
 
   public resetName(): void {
-    let candidateName = this.makeNewName()
-    this._name = candidateName
+    this._name = this.createName()
   }
 
   public static releaseNames(): void {
-    Robot._prefixIndex = 0
-    Robot._integerValue = 0
-    Robot._integerStart = 0
   }
 
-  private makeNewName(): string {
-    let prefix = this.PREFIXES[Robot._prefixIndex]
-    let number = Robot._integerValue.toString().padStart(3, '0')
-    let parts = [prefix, number]
-    let candidateName = parts.join('')
-
-    Robot._prefixIndex = (Robot._prefixIndex + 1) % this.PREFIXES.length
-    Robot._integerValue += 1
-
-    if(Robot._prefixIndex === 0) {
-      Robot._integerStart = (Robot._integerStart + 1) % 1000
-      Robot._integerValue = Robot._integerStart
-    }
-
-    return candidateName
+  private createName(): string {
+    return DB.getSerialNumber()
   }
 }

@@ -8,60 +8,58 @@ export class Rational {
   }
 
   add(other: Rational): Rational {
-    const {numerator: a1, denominator: b1} = this
-    const {numerator: a2, denominator: b2} = other
-    const newNumerator = a1 * b2 + a2 * b1
-    const newDenominator = b1 * b2
+    const newNumerator = (this.numerator *
+                         other.denominator) +
+                         (other.numerator *
+                         this.denominator)
+    const newDenominator = this.denominator *
+                           other.denominator
     return new Rational(newNumerator, newDenominator).reduce()
   }
 
   sub(other: Rational): Rational {
-    const {numerator: a1, denominator: b1} = this
-    const {numerator: a2, denominator: b2} = other
-    const newNumerator = a1 * b2 - a2 * b1
-    const newDenominator = b1 * b2
+    const newNumerator = (this.numerator *
+                         other.denominator) -
+                         (other.numerator *
+                         this.denominator)
+    const newDenominator = this.denominator *
+                           other.denominator
     return new Rational(newNumerator, newDenominator).reduce()
   }
 
   mul(other: Rational): Rational {
-    const {numerator: a1, denominator: b1} = this
-    const {numerator: a2, denominator: b2} = other
-    const newNumerator = a1 * a2
-    const newDenominator = b1 * b2
+    const newNumerator = this.numerator * other.numerator
+    const newDenominator = this.denominator * other.denominator
     return new Rational(newNumerator, newDenominator).reduce()
   }
 
-  div(other: Rational): Rational {
-    const {numerator: a1, denominator: b1} = this
-    const {numerator: a2, denominator: b2} = other
-    const newNumerator = a1 * b2
-    const newDenominator = a2 * b1
+  div(number: Rational): Rational {
+    const newNumerator = this.numerator * number.denominator
+    const newDenominator = number.numerator * this.denominator
     return new Rational(newNumerator, newDenominator).reduce()
   }
 
   abs(): Rational {
-    return new Rational(
-      Math.abs(this.numerator), 
-      Math.abs(this.denominator)
-    ).reduce()
-  }
-
-  exprational(num: number): Rational {
-    const {numerator: a, denominator: b} = this
-    const newNumerator = (num > 0 ? a : b) ** Math.abs(num)
-    const newDenominator = (num > 0 ? b : a) ** Math.abs(num)
+    const newNumerator = Math.abs(this.numerator)
+    const newDenominator = Math.abs(this.denominator)
     return new Rational(newNumerator, newDenominator).reduce()
   }
 
-  expreal(num: number): number {
-    return Math.pow(num, this.numerator/this.denominator)
+  exprational(exponent: number): Rational {
+    const newNumerator = Math.pow(this.numerator, Math.abs(exponent))
+    const newDenominator = Math.pow(this.denominator, Math.abs(exponent))
+    return exponent >= 0 ? new Rational(newNumerator, newDenominator).reduce() : new Rational(newDenominator, newNumerator).reduce()
+  }
+
+  expreal(base: number): number {
+    return Math.pow(base, (this.numerator / this.denominator))
   }
 
   reduce(): Rational {
-    const gcd = this.gcd(this.numerator, this.denominator)
-    let newNumerator = this.numerator / gcd
-    let newDenominator = this.denominator / gcd
-    if(newDenominator < 0) {
+    const divisor = this.gcd(this.numerator, this.denominator)
+    let newNumerator = this.numerator / divisor
+    let newDenominator = this.denominator / divisor
+    if (newDenominator < 0) {
       newNumerator *= -1
       newDenominator *= -1
     }
@@ -69,11 +67,9 @@ export class Rational {
   }
 
   private gcd(a: number, b: number): number {
-    if(!b) {
+    if (b === 0) {
       return a
-    } else {
-      return this.gcd(b, a % b) 
     }
+    return this.gcd(b, a % b)
   }
 }
-

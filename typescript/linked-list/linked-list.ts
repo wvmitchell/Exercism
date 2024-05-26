@@ -1,115 +1,94 @@
 class Node<TElement> {
-  data: TElement;
-  next: Node<TElement> | null
-  previous: Node<TElement> | null
+  _data: TElement
+  _next: Node<TElement> | null
 
-  constructor(data: TElement) {
-    this.data = data
-    this.next = null
-    this.previous = null
+  constructor(element: TElement) {
+    this._data = element
+    this._next = null
   }
 }
 
 export class LinkedList<TElement> {
-  private head: Node<TElement> | null
-  private tail: Node<TElement> | null
-
-  constructor() {
-    this.head = null
-    this.tail = null
-  }
+  _head: Node<TElement> | null = null
 
   public push(element: TElement): void {
-    let newNode = new Node(element)
-    let currentTail = this.tail
+    const node = new Node(element)
 
-    if(!currentTail) {
-      this.head = newNode
-      this.tail = newNode
+    if(!this._head) {
+      this._head = node
     } else {
-      newNode.previous = currentTail
-      currentTail.next = newNode
-      this.tail = newNode
+      let current = this._head
+      while(current._next) {
+        current = current._next
+      }
+      current._next = node
     }
   }
 
   public pop(): TElement | null {
-    let tail = this.tail
-    if(tail) {
-      let previous = tail.previous
-      if(previous) {
-        previous.next = null
-        this.tail = previous
-      } else {
-        this.head = null
-        this.tail = null
+    let current = this._head
+
+    if(current?._next) {
+      let next = current._next
+      while(next._next) {
+        current = next
+        next = next._next
       }
-      return tail.data
+      current._next = null
+      return next._data
+    } else if(current) {
+      this._head = null
+      return current._data
     } else {
       return null
     }
   }
 
   public shift(): TElement | null {
-    let head = this.head
-    if(head) {
-      let next = head.next
-      if(next) {
-        next.previous = null
-        this.head = next
-      } else {
-        this.head = null
-        this.tail = null
-      }
-      return head.data
+    const current = this._head
+
+    if(current) {
+      this._head = current._next
+      return current._data
     } else {
       return null
     }
   }
 
   public unshift(element: TElement): void {
-    let newNode = new Node(element)
-    let currentHead = this.head
+    const node = new Node(element)
+    const current = this._head
 
-    if(!currentHead) {
-      this.head = newNode
-      this.tail = newNode
-    } else {
-      newNode.next = currentHead
-      currentHead.previous = newNode
-      this.head = newNode
-    }
+    this._head = node
+    node._next = current
   }
 
   public delete(element: TElement): void {
-    let currentNode = this.head
-    while(currentNode) {
-      let foundElement = currentNode.data === element
-      let previous = currentNode.previous
-      let next = currentNode.next
+    let current = this._head
+    let next = current?._next
+    
+    if(current?._data === element) {
+      this._head = current._next
+      return
+    }
 
-      if(foundElement) {
-        if(!previous) {
-          this.shift()
-        } else if(!next) {
-          this.pop()
-        } else {
-          previous.next = next
-          next.previous = previous
-        }
-        break
+    while(current && next) {
+      if(next._data === element) {
+        current._next = next._next
       }
-      currentNode = currentNode.next
+      current = next
+      next = next._next
     }
   }
 
   public count(): number {
-    let counter = 0
-    let currentNode = this.head
-    while(currentNode) {
-      currentNode = currentNode.next
-      counter++
+    let current = this._head
+    let count = current ? 1 : 0
+    while(current?._next) {
+      current = current._next
+      count++
     }
-    return counter
+    return count
   }
 }
+

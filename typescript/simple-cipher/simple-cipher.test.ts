@@ -38,10 +38,6 @@ describe('Random key cipher', () => {
 
   it('is reversible', () => {
     const plaintext = 'abcdefghij'
-    //console.log('key: ', simpleCipher.key)
-    const encoded = simpleCipher.encode(plaintext)
-    //console.log('encoded: ', encoded)
-    //console.log('decoded: ', simpleCipher.decode(encoded))
     expect(simpleCipher.decode(simpleCipher.encode(plaintext))).toEqual(
       plaintext
     )

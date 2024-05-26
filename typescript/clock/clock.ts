@@ -1,38 +1,45 @@
 export class Clock {
-  private _totalMinutes: number
-  readonly DAY_MINUTES: number = 24 * 60
+  readonly DAY_MINUTES = 60 * 24
+  readonly HOUR_MINUTES = 60
+  _minutes: number
 
   constructor(hour: number, minute?: number) {
-    this._totalMinutes = hour * 60 + (minute || 0)
+    const rawMinutes = hour * this.HOUR_MINUTES + (minute ?? 0)
+
+    this._minutes = this.normalizeRawMinutes(rawMinutes)
+  }
+
+  get hour(): number {
+    return Math.floor(this._minutes / this.HOUR_MINUTES)
+  }
+
+  get minute(): number {
+    return this._minutes % this.HOUR_MINUTES
   }
 
   public toString(): string {
-    let normalizedMins = this.normalizeMins(this._totalMinutes)
-    let hours = Math.floor(normalizedMins / 60) % 24
-    let minutes = normalizedMins % 60
-    let hourStr = hours.toString().padStart(2, '0')
-    let minuteStr = minutes.toString().padStart(2, '0')
-    return `${hourStr}:${minuteStr}`
+    const hourString = String(this.hour).padStart(2, '0')
+    const minuteString = String(this.minute).padStart(2, '0')
+
+    return `${hourString}:${minuteString}`
   }
 
   public plus(minutes: number): Clock {
-    this._totalMinutes += minutes
+    this._minutes = this.normalizeRawMinutes(this._minutes + minutes)
     return this
   }
 
   public minus(minutes: number): Clock {
-    this._totalMinutes -= minutes
+    this._minutes = this.normalizeRawMinutes(this._minutes - minutes)
     return this
   }
 
   public equals(other: Clock): boolean {
-    return this.toString() === other.toString()
+    return this._minutes === other._minutes
   }
 
-  private normalizeMins(minutes: number): number {
-    if(minutes < 0) {
-      return (minutes % this.DAY_MINUTES) + this.DAY_MINUTES
-    }
-    return minutes % this.DAY_MINUTES
+  private normalizeRawMinutes(raw: number): number {
+    const minutes = raw % this.DAY_MINUTES
+    return minutes >= 0 ? minutes : (minutes + this.DAY_MINUTES)
   }
 }

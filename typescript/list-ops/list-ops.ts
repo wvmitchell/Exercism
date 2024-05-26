@@ -1,149 +1,145 @@
-class Node<Type> {
-  data: Type
-  next: Node<Type> | null
-  previous: Node<Type> | null
+class Node<T> {
+  data: T
+  next: Node<T> | null
 
-  constructor(data: Type) {
-    this.data = data
+  constructor(value: T) {
+    this.data = value
     this.next = null
-    this.previous = null
   }
 }
 
-export class List<Type> {
-  public head: Node<Type> | null
-  public tail: Node<Type> | null
+function isList(obj: any): boolean {
+  if(obj?.head || obj?.head === null) {
+    return true
+  }
+  return false
+}
 
-  constructor() {
-    this.head = null
-    this.tail = null
+export class List<T> implements Iterable<T>{
+  public head: Node<T> | null = null
+  public tail: Node<T> | null = null
+
+  public [Symbol.iterator](): Iterator<T> {
+    let current = this.head
+    return {
+      next(): IteratorResult<T> {
+        if(current) {
+          const value = current.data
+          current = current.next
+          return { value, done: false }
+        } else {
+          return { value: null, done: true }
+        }
+      }
+    }
   }
 
-  public static create(...values: any[]): List<any> {
+  public static create(...values: unknown[]): List<unknown> {
+    if(isList(values[0])) {
+      return List.createFromLists(...values)
+    }
+
     let list = new List()
-    let index = 0
-    while(values[index]) {
-      if(values[index].isList && values[index].isList()) {
-        let otherList = values[index]
-        list.append(otherList)
-      } else {
-        list.push(values[index])
+
+    if(values.length) {
+      list.head = new Node(values[0])
+      list.tail = list.head
+      let current = list.head
+
+      let i = 1
+      while(values[i]) {
+        current.next = new Node(values[i])
+        list.tail = current.next
+        current = current.next
+        i++
       }
-      index++
+    }
+
+    return list
+  }
+
+  private static createFromLists(...lists: unknown[]): List<unknown> {
+    let list = new List()
+    let i = 0
+    while(lists[i]) {
+      let tempList = lists[i] as List<unknown>
+      let temp = List.create(...tempList)
+      console.log('temp', temp)
+      list = list.append(temp)
+      console.log('list', list)
+      i++
     }
     return list
   }
 
-  isList(): this is List<Type> {
-    return this instanceof List<Type>
-  }
+  public forEach(callback: (value: unknown) => void): void {
+    let current = this.head
 
-  public push(value: Type): void {
-    let newNode = new Node(value)
-
-    if(this.head && this.tail) {
-      let currentTail = this.tail
-      currentTail.next = newNode
-      newNode.previous = currentTail
-      this.tail = newNode
-    } else {
-      this.head = newNode
-      this.tail = newNode
+    while(current) {
+      callback(current.data)
+      current = current.next
     }
   }
 
-  public unshift(value: Type): void {
-    let newNode = new Node(value)
-
-    if(this.head && this.tail) {
-      let currentHead = this.head
-      currentHead.previous = newNode
-      newNode.next = currentHead
-      this.head = newNode
-    } else {
-      this.head = newNode
-      this.tail = newNode
-    }
-  }
-
-  public forEach(callback: (item: any) => void): void {
-    let currentNode = this.head
-    while(currentNode) {
-      callback(currentNode.data)
-      currentNode = currentNode.next
-    }
-  }
-  
-  public append(other: List<Type>): List<Type> {
-    if(!other.head) {
-      return this
-    }
-
-    if(this.head && this.tail) {
+  public append(other: List<T>): List<T> {
+    if(this.tail && other.head) {
       this.tail.next = other.head
       this.tail = other.tail
-    } else {
+    } else if(!this.head && other.head) {
       this.head = other.head
       this.tail = other.tail
     }
     return this
   }
 
-  public concat(other: List<Type>): List<Type> {
+  public concat(other: List<T>): List<T> {
     return this.append(other)
   }
 
-  public filter<type>(callback: (item: type) => boolean): List<Type> {
-    let filtered = new List<Type>()
+  public filter<Y>(callback: (value: Y) => boolean): List<Y> {
+    let list = new List<Y>()
     this.forEach(item => {
-      if(callback(item)) {
-        filtered.push(item)
-      }
+      if(callback(item as Y)) list.append(List.create(item) as List<Y>)
     })
-    return filtered
+    return list
   }
 
   public length(): number {
-    let count = 0
-    this.forEach(() => {
-      count++
-    })
-    return count
+    let counter = 0
+    let current = this.head
+    while(current) {
+      current = current.next
+      counter++
+    }
+    return counter
   }
 
-  public map<type>(callback: (item: type) => any): List<any> {
-    let mapped = new List<Type>()
-    this.forEach(item => mapped.push(callback(item)))
-    return mapped
-  }
-
-  public foldl<TypeA, TypeB>(
-    callback: (acc: TypeB, item: TypeA) => TypeB,
-    initial: TypeB
-  ): TypeB {
-    let final = initial
+  public map<Y>(callback: (value: Y) => Y): List<Y> {
+    let list = new List<Y>()
     this.forEach(item => {
-      final = callback(final, item)
+      list.append(List.create(callback(item as Y)) as List<Y>)
     })
-    return final
+    return list
   }
 
-  public foldr<TypeA, TypeB>(
-    callback: (acc: TypeB, item: TypeA) => TypeB,
-    initial: TypeB
-  ): TypeB {
-    let final = initial
-    this.reverse().forEach(item => {
-      final = callback(final, item)
-    })
-    return final
-  }
-
-  public reverse(): List<Type> {
-    let reversed = new List<Type>()
+  public foldl<Y, X>(callback: (acc: Y, el: X) => Y, inital: Y): Y {
+    let result = inital
     this.forEach(item => {
-      reversed.unshift(item)
+      result = callback(result, item as X)
     })
-    return reversed
+    return result
+  }
+  
+  public foldr<Y, X>(callback: (acc: Y, el: X) => Y, inital: Y): Y {
+    return this.reverse().foldl(callback, inital)
+  }
+
+  public reverse(): List<unknown> {
+    // Implement this method
+    let list = new List()
+    this.forEach(item => {
+      list = List.create(item).append(list)
+    })
+    return list
   }
 }

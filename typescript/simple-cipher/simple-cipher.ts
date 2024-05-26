@@ -1,48 +1,47 @@
+const LETTERS = 'abcdefghijklmnopqrstuvwxyz'.split('');
+const BASE_CHAR_CODE = 97
+
 export class SimpleCipher {
   key: string
-  min: number
-  max: number
 
-  constructor(key: string | void) {
-    this.key = key || this.randomKey()
-    this.min = 'a'.charCodeAt(0)
-    this.max = this.min + 25
+  constructor(key?: string) {
+    this.key = key ?? this.randomKey()
   }
 
-  encode(message: string): string {
-    //let chars = message.split('')
-    //return chars.map((char, i) => {
-    //  let index = i % this.key.length
-    //  let diff = this.key[index].charCodeAt(0) - this.min
-    //  let raw = char.charCodeAt(0) + diff
-    //  let encodedCode = raw > this.max ? raw - this.max + this.min - 1: raw
-    //  return String.fromCharCode(encodedCode)
-    //}).join('')
-    return message.replace(/[a-z]/g, (match, i) => {
-      let index = i % this.key.length
-      let diff = this.key[index].charCodeAt(0) - this.min
-      return String.fromCharCode(0)
-    })
+  encode(plaintext: string): string {
+    return this.code(plaintext, this.encodeChar)
   }
 
-  decode(message: string): string {
-    let chars = message.split('')
-    return chars.map((char, i) => {
-      let index = i % this.key.length
-      let diff = this.key[index].charCodeAt(0) - this.min
-      let raw = char.charCodeAt(0) - diff
-      let decodedCode = raw < this.min ? this.max - (this.min - raw) + 1 : raw
-      return String.fromCharCode(decodedCode)
-    }).join('')
+  decode(ciphertext: string): string {
+    return this.code(ciphertext, this.decodeChar)
   }
 
-  randomKey(): string {
-    let start = 'a'.charCodeAt(0)
-    let chars = [...Array(100)].map(() => {
-      let num = Math.floor(Math.random() * 25)
-      let code = start + num
+  code(text: string, method: Function): string {
+    return text
+      .split('')
+      .map((char, i) => {
+        const shift = this.key.charCodeAt(i % this.key.length) - BASE_CHAR_CODE
+        return method(char, shift)
+      }).join('')
+  }
+
+  private encodeChar(char: string, shift: number): string {
+      const code = (char.charCodeAt(0) + shift - BASE_CHAR_CODE) % 26 +
+          BASE_CHAR_CODE
       return String.fromCharCode(code)
-    })
-    return chars.join('')
+  }
+
+  private decodeChar(char: string, shift: number): string {
+      let code = char.charCodeAt(0) - shift
+      code = code < BASE_CHAR_CODE ? code + 26 : code
+      return String.fromCharCode(code)
+  }
+
+  private randomKey(): string {
+    let key = ''
+    for(let i = 0; i < 100; i++) {
+      key += LETTERS[Math.floor(Math.random() * 26)]
+    }
+    return key
   }
 }

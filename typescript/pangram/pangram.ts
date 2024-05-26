@@ -1,6 +1,4 @@
-export function isPangram(candidate: string): boolean {
-  const downcased = candidate.toLowerCase()
-  const letters = Array.from("abcdefghijklmnopqrstuvwxyz") 
-
-  return letters.every(l => downcased.includes(l))
+export function isPangram(test: string): boolean {
+  const letters = new Set(test.toUpperCase().match(/[A-Z]/g))
+  return letters.size === 26
 }

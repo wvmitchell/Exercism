@@ -14,7 +14,7 @@
   "devDependencies": {
     "@exercism/babel-preset-typescript": "^0.4.0",
     "@exercism/eslint-config-typescript": "^0.5.0",
-    "@types/jest": "^29.5.5",
+    "@types/jest": "^29.5.2",
     "@types/node": "~18.16.16",
     "babel-jest": "^29.5.0",
     "core-js": "~3.30.2",
@@ -28,5 +28,5 @@
     "lint:types": "yarn tsc --noEmit -p .",
     "lint:ci": "eslint . --ext .tsx,.ts"
   },
-  "packageManager": "yarn@3.6.0"
+  "packageManager": "yarn@3.6.4"
 }

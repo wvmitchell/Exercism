@@ -1,8 +1,3 @@
-export function decodedValue(colors: Array<string>): number {
-  const numberString = `${COLORS.indexOf(colors[0])}${COLORS.indexOf(colors[1])}`
-  return parseInt(numberString)
-}
-
 const COLORS = [
   'black',
   'brown',
@@ -15,3 +10,9 @@ const COLORS = [
   'grey',
   'white',
 ]
+
+const colorCode = (color: string): number => COLORS.indexOf(color)
+
+export const decodedValue = ([tens, ones]: string[]): number => {
+  return colorCode(tens) * 10 + colorCode(ones)
+}

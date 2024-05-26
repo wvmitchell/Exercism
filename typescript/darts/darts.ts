@@ -1,12 +1,16 @@
 export function score(x: number, y: number): number {
-  const distance =  Math.sqrt(Math.abs(x) ** 2 + Math.abs(y) ** 2)
+  const distanceFromCenter = Math.hypot(x, y)
+  const innerRing = 1
+  const middleRing = 5
+  const outerRing = 10
 
-  if(distance <= 1) {
-    return 10
-  } else if(distance <= 5) {
+  if(distanceFromCenter > outerRing) {
+    return 0
+  } else if(distanceFromCenter > middleRing) {
+    return 1
+  } else if(distanceFromCenter > innerRing) {
     return 5
-  } else if(distance <= 10) {
-    return 1 
+  } else {
+    return 10
   }
-  return 0
 }

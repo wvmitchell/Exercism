@@ -1,16 +1,31 @@
 export class Matrix {
-  readonly rows: Array<number[]>
-  readonly columns: Array<number[]>
+  _rows: Array<number[]>
+  _columns: Array<number[]>
 
-  constructor(initial: string) {
-    const string_rows = initial.split('\n')
+  constructor(raw: string) {
+    this._rows = this.rowsFromRaw(raw)
+    this._columns = this.transpose(this._rows)
+  }
 
-    this.rows = string_rows.map(s_row => {
-      return s_row.split(' ').map(n => parseInt(n))
-    })
+  get rows(): Array<number[]> {
+    return this._rows
+  }
 
-    this.columns = this.rows.map((_, index) => {
-      return this.rows.map(row => row[index])
+  get columns(): Array<number[]> {
+    return this._columns
+  }
+
+  rowsFromRaw(raw: string): Array<number[]> {
+    const rawRows = raw.split('\n')
+    return rawRows.reduce((rows: Array<number[]>, current) => {
+      const row = current.split(' ').map(n => parseInt(n))
+      return [...rows, row]
+    }, [])
+  }
+
+  transpose(matrix: Array<number[]>): Array<number[]> {
+    return matrix[0].map((_, i) => {
+      return matrix.map((row => row[i]))
     })
   }
 }
