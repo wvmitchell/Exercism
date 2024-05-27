@@ -19,8 +19,6 @@ class SpaceAge
   end
 
   ORBITAL_PERIODS.each do |planet, period|
-    define_method "on_#{planet}" do
-      @on_earth / period
-    end
+    define_method("on_#{planet}") { @on_earth / period }
   end
 end
