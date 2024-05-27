@@ -1,11 +1,11 @@
 export class Gigasecond {
-  private gigaseconds: number
+  _date: Date
 
-  public constructor(date: Date) {
-    this.gigaseconds = date.valueOf() + 10**12
+  constructor(date: Date) {
+    this._date = new Date(date.getTime() + 1e12)
   }
 
   public date(): Date {
-    return new Date(this.gigaseconds)
+    return this._date
   }
 }
