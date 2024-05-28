@@ -2,7 +2,6 @@ class Triangle
   attr_reader :sides
 
   def initialize(sides)
-    @side1, @side2, @side3 = sides
     @sides = sides
   end
 
