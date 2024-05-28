@@ -18,7 +18,7 @@ class Triangle
   end
 
   def valid?
-    sides.all?(&:positive?) &&
-      sides.all? { |side| side < sides.sum - side }
+    a, b, c = sides.sort
+    sides.all?(&:positive?) && a + b >= c
   end
 end
