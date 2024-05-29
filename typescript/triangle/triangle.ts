@@ -1,38 +1,35 @@
 export class Triangle {
-  private sides: number[]
-  private uniq: Set<number>
+  sides: number[]
+  sidesSet: Set<number>
 
   constructor(...sides: number[]) {
-    this.sides = sides.sort();
-    this.uniq = new Set(this.sides)
+    this.sides = sides.sort()
+    this.sidesSet = new Set(sides)
   }
 
   get isEquilateral(): boolean {
-    const { uniq, isTriangle } = this;
-    const allSidesEqual = uniq.size === 1
-
-    return isTriangle && allSidesEqual;
+    return this.valid && this.sidesSet.size === 1
   }
 
   get isIsosceles(): boolean {
-    const { uniq, isTriangle, isEquilateral } = this;
-    let twoSidesEqual = uniq.size === 2
-
-    return isEquilateral || (isTriangle && twoSidesEqual);
+    return this.valid && this.sidesSet.size <= 2
   }
 
   get isScalene(): boolean {
-    const { uniq, isTriangle } = this;
-    const allSidesInequal = uniq.size === 3
-
-    return isTriangle && allSidesInequal;
+    return this.valid && this.sidesSet.size === 3
   }
 
-  get isTriangle(): boolean {
-    const [a, b, c] = this.sides
-    const nonZeroLengths = a > 0
-    const satisfiesInequality = a + b >= c
+  private get valid(): boolean {
+    return this.nonZeroSides && 
+           this.satisifiesTriangleInequality
+  }
 
-    return nonZeroLengths && satisfiesInequality;
+  private get nonZeroSides(): boolean {
+    return this.sides.every(s => s > 0)
+  }
+
+  private get satisifiesTriangleInequality(): boolean {
+    const [a, b, c] = this.sides
+    return a + b >= c
   }
 }
