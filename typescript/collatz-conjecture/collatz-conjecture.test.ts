@@ -35,12 +35,10 @@ describe('CollatzConjecture', () => {
     }).toThrowError(expected)
   })
 
-  it.only('non-integer value is an error', () => {
-    //const expected = 'Only positive integers are allowed'
-    //expect(() => {
-    //  steps(3.1415)
-    //}).toThrowError(expected)
-    const arr = [...Array(100).keys()].slice(1).map(n => steps(n))
-    console.log(arr)
+  it('non-integer value is an error', () => {
+    const expected = 'Only positive integers are allowed'
+    expect(() => {
+      steps(3.1415)
+    }).toThrowError(expected)
   })
 })

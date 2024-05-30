@@ -1,14 +1,19 @@
-export function steps(start: number): number {
-  if(start < 1 || start % 1 > 0) {
-    throw Error('Only positive integers are allowed')
+export function steps(count: number): number {
+  if (count <= 0 || !Number.isInteger(count)) {
+    throw new Error('Only positive integers are allowed')
   }
 
-  let n = start
-  let count = 0
-  while(n !== 1) {
-    n = n % 2 === 0 ? n / 2 : 3 * n + 1
-    count++
+  let totalSteps = 0
+  let current = count
+
+  while(current !== 1) {
+    if (current % 2 === 0) {
+      current = current / 2
+    } else {
+      current = 3 * current + 1
+    }
+    totalSteps++
   }
 
-  return count
+  return totalSteps
 }
