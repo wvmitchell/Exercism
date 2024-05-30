@@ -1,5 +1,3 @@
-require 'pry'
-
 class SpiralMatrix
   attr_reader :size
 
@@ -17,20 +15,20 @@ class SpiralMatrix
     elements = (1..size**2).to_a
     starting_matrix = elements.length.odd? ? [[elements.pop]] : []
 
-    wrap_matrix(starting_matrix, elements, starting_matrix.length + 1) while elements.any?
+    wrap_matrix(starting_matrix, elements) while elements.any?
 
     starting_matrix
   end
 
-  def wrap_matrix(matrix, elements, section_length)
-    matrix = wrap_left(matrix, elements, section_length)
-    matrix = wrap_bottom(matrix, elements, section_length)
-    matrix = wrap_right(matrix, elements, section_length)
-    wrap_top(matrix, elements, section_length)
+  def wrap_matrix(matrix, elements)
+    matrix = wrap_left(matrix, elements)
+    matrix = wrap_bottom(matrix, elements)
+    matrix = wrap_right(matrix, elements)
+    wrap_top(matrix, elements)
   end
 
-  def wrap_left(matrix, elements, section_length)
-    (0...section_length).each do |i|
+  def wrap_left(matrix, elements)
+    (0..matrix.length).each do |i|
       if matrix[i].nil?
         matrix[i] = [elements.pop]
       else
@@ -40,25 +38,25 @@ class SpiralMatrix
     matrix
   end
 
-  def wrap_bottom(matrix, elements, section_length)
-    to_push = elements.pop(section_length)
+  def wrap_bottom(matrix, elements)
+    to_push = elements.pop(matrix.length)
     matrix[-1] += to_push.reverse
     matrix
   end
 
-  def wrap_right(matrix, elements, section_length)
+  def wrap_right(matrix, elements)
     (matrix.length - 1).downto(0) do |i|
-      if i == 0
+      if i.zero?
         matrix.unshift([elements.pop])
       else
-        matrix[i-1].push(elements.pop)
+        matrix[i - 1].push(elements.pop)
       end
     end
 
     matrix
   end
 
-  def wrap_top(matrix, elements, section_length)
-    matrix[0].unshift(*elements.pop(section_length))
+  def wrap_top(matrix, elements)
+    matrix[0].unshift(*elements.pop(matrix.length - 1))
   end
 end
