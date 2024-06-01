@@ -1,5 +1,3 @@
-require 'pry'
-
 module Transpose
   def self.transpose(input)
     matrix = parse_input_to_matrix(input).transpose
