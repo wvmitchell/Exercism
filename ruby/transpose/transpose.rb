@@ -1,22 +1,19 @@
+require 'pry'
+
 module Transpose
-  extend self
-
-  def transpose(input)
-    transposed_matrix = parse_to_matrix(input).transpose
-    stringify_matrix(transposed_matrix)
+  def self.transpose(input)
+    matrix = parse_input_to_matrix(input).transpose
+    binding.pry
+    stringify_matrix(matrix)
   end
 
-  def parse_to_matrix(input)
-    rows = input.lines(chomp: true)
-    maximum_length = rows.map(&:size).max
-    rows.map do |row|
-      row.ljust(maximum_length, "*").chars
-    end
+  def self.parse_input_to_matrix(input)
+    rows = input.split("\n")
+    max_length = rows.empty? ? 0 : rows.max_by(&:length).length
+    rows.map { |raw_row| raw_row.ljust(max_length).split('') }
   end
 
-  def stringify_matrix(array_matrix)
-    array_matrix.map do |row|
-      row.join.sub(/\*+\z/, "")
-    end.join("\n").tr("*", " ")
+  def self.stringify_matrix(matrix)
+    matrix.map { |row| row.join('').rstrip }.join("\n")
   end
 end
