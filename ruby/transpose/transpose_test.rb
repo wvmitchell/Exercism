@@ -52,28 +52,24 @@ class TransposeTest < Minitest::Test
   end
 
   def test_square
-    skip
     input = "HEART\nEMBER\nABUSE\nRESIN\nTREND"
     expected = "HEART\nEMBER\nABUSE\nRESIN\nTREND"
     assert_equal expected, Transpose.transpose(input)
   end
 
   def test_rectangle
-    skip
     input = "FRACTURE\nOUTLINED\nBLOOMING\nSEPTETTE"
     expected = "FOBS\nRULE\nATOP\nCLOT\nTIME\nUNIT\nRENT\nEDGE"
     assert_equal expected, Transpose.transpose(input)
   end
 
   def test_triangle
-    skip
     input = "T\nEE\nAAA\nSSSS\nEEEEE\nRRRRRR"
     expected = "TEASER\n EASER\n  ASER\n   SER\n    ER\n     R"
     assert_equal expected, Transpose.transpose(input)
   end
 
   def test_jagged_triangle
-    skip
     input = "11\n2\n3333\n444\n555555\n66666"
     expected = "123456\n1 3456\n  3456\n  3 56\n    56\n    5"
     assert_equal expected, Transpose.transpose(input)
