@@ -1,5 +1,5 @@
 module FlattenArray
   def self.flatten(nested_array)
-    nested_array.flatten.reject(&:nil?)
+    nested_array.flatten.compact
   end
 end
