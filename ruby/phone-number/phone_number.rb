@@ -1,7 +1,10 @@
 module PhoneNumber
   def self.clean(phone_number)
-    cleaned = phone_number.gsub(/\D/, '')
-    cleaned[-10..] if valid?(cleaned)
+    # cleaned = phone_number.gsub(/\D/, '')
+    # cleaned[-10..] if valid?(cleaned)
+    number = phone_number.gsub(/\D/, '')
+    number = number.gsub(/^1/, '')
+    number[/^([2-9]\d\d){2}\d{4}$/]
   end
 
   def self.valid?(phone_number)
