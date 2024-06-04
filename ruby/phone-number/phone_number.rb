@@ -1,5 +1,3 @@
-require 'pry'
-
 module PhoneNumber
   def self.clean(phone_number)
     cleaned = phone_number.gsub(/\D/, '')
