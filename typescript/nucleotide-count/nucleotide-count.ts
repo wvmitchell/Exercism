@@ -3,16 +3,10 @@ export function nucleotideCounts(strand: string): { [key: string]: number } {
     throw new Error('Invalid nucleotide in strand')
   }
 
-  let counts: { [key: string]: number } = {
-    A: 0,
-    C: 0,
-    G: 0,
-    T: 0
+  return {
+    A: strand.match(/A/g)?.length || 0,
+    C: strand.match(/C/g)?.length || 0,
+    G: strand.match(/G/g)?.length || 0,
+    T: strand.match(/T/g)?.length || 0,
   }
-
-  for(let nucleotide of strand) {
-    counts[nucleotide] += 1
-  }
-
-  return counts
 }
