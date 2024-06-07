@@ -11,13 +11,15 @@ const allergens: { [key: string]: number } = {
 
 export class Allergies {
   allergenIndex: number
+  _list: string[]
 
   constructor(allergenIndex: number) {
     this.allergenIndex = allergenIndex
+    this._list = Object.keys(allergens).filter((allergen: string) => this.allergicTo(allergen))
   }
 
   public list(): string[] {
-    return Object.keys(allergens).filter((allergen: string) => this.allergicTo(allergen))
+    return this._list
   }
 
   public allergicTo(allergen: string): boolean {
