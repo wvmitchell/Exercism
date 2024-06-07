@@ -1,31 +1,26 @@
-const testedAlergens = [
-  'eggs',
-  'peanuts',
-  'shellfish',
-  'strawberries',
-  'tomatoes',
-  'chocolate',
-  'pollen',
-  'cats',
-]
+const allergens: { [key: string]: number } = {
+  eggs: 1,
+  peanuts: 2,
+  shellfish: 4,
+  strawberries: 8,
+  tomatoes: 16,
+  chocolate: 32,
+  pollen: 64,
+  cats: 128
+}
 
 export class Allergies {
-  allergenIndices: string[];
+  allergenIndex: number
 
   constructor(allergenIndex: number) {
-    this.allergenIndices = allergenIndex
-                          .toString(2)
-                          .split('')
-                          .reverse()
+    this.allergenIndex = allergenIndex
   }
 
   public list(): string[] {
-    return testedAlergens.filter((allergen, i) => {
-      return this.allergenIndices[i] === '1'
-    })
+    return Object.keys(allergens).filter((allergen: string) => this.allergicTo(allergen))
   }
 
   public allergicTo(allergen: string): boolean {
-    return this.list().includes(allergen)
+    return Boolean(this.allergenIndex & allergens[allergen])
   }
 }
