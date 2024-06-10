@@ -4,3 +4,7 @@
 /**/.eslintignore
 /**/.eslintrc.cjs
 /**/.yarnrc.yml
+/**/bin
+/**/lib
+/python/pyvenv.cfg
+/python/**/__pycache__
