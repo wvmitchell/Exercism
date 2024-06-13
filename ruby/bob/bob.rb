@@ -1,27 +1,23 @@
 module Bob
-  def self.hey(remark)
-    if shouting?(remark) && question?(remark)
-      'Calm down, I know what I\'m doing!'
-    elsif shouting?(remark)
+  def hey(remark)
+    case remark
+    when loud_question?
+      "Calm down, I know what I'm doing!"
+    when shouting?
       "Whoa, chill out!"
-    elsif question?(remark)
+    when question?
       "Sure."
-    elsif silent?(remark)
+    when silent?
       "Fine. Be that way!"
     else
       "Whatever."
     end
   end
 
-  def self.shouting?(remark)
-    remark.upcase == remark && remark.match(/[A-Z]/)
-  end
+  def shouting? = ->(t) { t.upcase == t && t =~ /[A-Z]/ }
+  def question? = ->(t) { t.strip.end_with?("?") }
+  def loud_question? = ->(t) { shouting?[t] && question?[t] }
+  def silent? = ->(t) { t.strip.empty? }
 
-  def self.question?(remark)
-    remark.strip.end_with?("?")
-  end
-
-  def self.silent?(remark)
-    remark.strip.empty?
-  end
+  module_function :hey, :shouting?, :question?, :loud_question?, :silent?
 end
