@@ -2,7 +2,7 @@ module PerfectNumber
   def self.classify(number)
     raise "Number must be positive" if number < 1
 
-    total = (1...number).select { |num| (number % num).zero? }.sum
+    total = (1...number).sum { |n| (number % n).zero? ? n : 0 }
 
     if total < number
       "deficient"
