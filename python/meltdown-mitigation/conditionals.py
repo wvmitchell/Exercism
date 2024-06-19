@@ -75,5 +75,3 @@ def fail_safe(temperature, neutrons_produced_per_second, threshold) -> str:
         return 'NORMAL'
     else:
         return 'DANGER'
-
-    pass
