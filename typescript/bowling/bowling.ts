@@ -1,8 +1,11 @@
 type Frame = number[];
+
 export class Bowling {
   frames: Frame[] = [];
 
   public roll(pins: number): void {
+    if (this.gameOver()) throw new Error("Cannot roll after game is over");
+
     let isFinalFrame = this.frames.length === 10;
     let isMidFrame =
       this.frames.length > 0 &&
@@ -14,9 +17,18 @@ export class Bowling {
     } else {
       this.frames.push([pins]);
     }
+
+    if (this.tooFewPins(pins)) throw new Error("Negative roll is invalid");
+    if (this.tooManyPins(pins))
+      throw new Error("Pin count exceeds pins on the lane");
+    if (this.invalidRoll())
+      throw new Error("Pin count exceeds pins on the lane");
   }
 
   public score(): number {
+    if (!this.gameStarted() || !this.gameOver())
+      throw new Error("Score cannot be taken until the end of the game");
+
     return this.frames.reduce((total, frame, i) => {
       return total + this.getFrameTotal(frame, i);
     }, 0);
@@ -56,5 +68,52 @@ export class Bowling {
     }
 
     return firstRoll + secondRoll;
+  }
+
+  /*--- Validation Methods ----*/
+
+  private tooFewPins(pins: number): boolean {
+    return pins < 0;
+  }
+
+  private tooManyPins(pins: number): boolean {
+    return pins > 10;
+  }
+
+  private invalidRoll(): boolean {
+    let inFinalFrame = this.frames.length === 10;
+
+    if (inFinalFrame) {
+      return this.invalidFinalFrame();
+    }
+    return this.invalidStandardFrame();
+  }
+
+  private invalidStandardFrame(): boolean {
+    let lastFrame = this.frames[this.frames.length - 1];
+    return lastFrame.reduce((sum, num) => sum + num) > 10;
+  }
+
+  private invalidFinalFrame(): boolean {
+    let lastFrame = this.frames[this.frames.length - 1];
+    let total = lastFrame.reduce((sum, num) => sum + num);
+
+    return total > 30 || (lastFrame[1] < 10 && total > 20);
+  }
+
+  private gameStarted(): boolean {
+    return this.frames.length > 0;
+  }
+
+  private gameOver(): boolean {
+    let isFinalFrame = this.frames.length === 10;
+    if (!isFinalFrame) return false;
+
+    let frame = this.frames[this.frames.length - 1];
+    let hasBonus = frame[0] + frame[1] >= 10;
+
+    return (
+      (hasBonus && frame.length === 3) || (!hasBonus && frame.length === 2)
+    );
   }
 }
