@@ -7,13 +7,12 @@ export class Bowling {
     if (this.gameOver()) throw new Error("Cannot roll after game is over");
 
     let isFinalFrame = this.frames.length === 10;
+    let currentFrame = this.frames[this.frames.length - 1];
     let isMidFrame =
-      this.frames.length > 0 &&
-      this.frames[this.frames.length - 1].length < 2 &&
-      this.frames[this.frames.length - 1][0] < 10;
+      this.frames.length > 0 && currentFrame.length < 2 && currentFrame[0] < 10;
 
     if (isMidFrame || isFinalFrame) {
-      this.frames[this.frames.length - 1].push(pins);
+      currentFrame.push(pins);
     } else {
       this.frames.push([pins]);
     }
@@ -40,11 +39,9 @@ export class Bowling {
       let isSpare = frame.length === 2 && frame[0] + frame[1] === 10 && j === 1;
       let isStrike = frame.length === 1 && frame[0] === 10;
 
-      if (isFinalFrame) {
-        return frameTotal + roll;
-      } else if (isSpare) {
+      if (isSpare && !isFinalFrame) {
         return frameTotal + roll + this.getSpareBonus(frameIndex);
-      } else if (isStrike) {
+      } else if (isStrike && !isFinalFrame) {
         return frameTotal + roll + this.getStrikeBonus(frameIndex);
       } else {
         return frameTotal + roll;
@@ -83,10 +80,9 @@ export class Bowling {
   private invalidRoll(): boolean {
     let inFinalFrame = this.frames.length === 10;
 
-    if (inFinalFrame) {
-      return this.invalidFinalFrame();
-    }
-    return this.invalidStandardFrame();
+    return inFinalFrame
+      ? this.invalidFinalFrame()
+      : this.invalidStandardFrame();
   }
 
   private invalidStandardFrame(): boolean {
