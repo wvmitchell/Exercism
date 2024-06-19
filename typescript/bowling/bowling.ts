@@ -1,10 +1,14 @@
+import assert from "assert";
+
 type Frame = number[];
 
 export class Bowling {
   frames: Frame[] = [];
 
   public roll(pins: number): void {
-    if (this.gameOver()) throw new Error("Cannot roll after game is over");
+    assert(!this.gameOver(), "Cannot roll after game is over");
+    assert(!this.tooFewPins(pins), "Negative roll is invalid");
+    assert(!this.tooManyPins(pins), "Pin count exceeds pins on the lane");
 
     let isFinalFrame = this.frames.length === 10;
     let currentFrame = this.frames[this.frames.length - 1];
@@ -17,16 +21,11 @@ export class Bowling {
       this.frames.push([pins]);
     }
 
-    if (this.tooFewPins(pins)) throw new Error("Negative roll is invalid");
-    if (this.tooManyPins(pins))
-      throw new Error("Pin count exceeds pins on the lane");
-    if (this.invalidRoll())
-      throw new Error("Pin count exceeds pins on the lane");
+    assert(!this.invalidRoll(), "Pin count exceeds pins on the lane");
   }
 
   public score(): number {
-    if (!this.gameStarted() || !this.gameOver())
-      throw new Error("Score cannot be taken until the end of the game");
+    assert(this.gameOver(), "Score cannot be taken until the end of the game");
 
     return this.frames.reduce((total, frame, i) => {
       return total + this.getFrameTotal(frame, i);
@@ -35,13 +34,12 @@ export class Bowling {
 
   private getFrameTotal(frame: Frame, frameIndex: number): number {
     return frame.reduce((frameTotal, roll, j) => {
-      let isFinalFrame = frameIndex === 9;
-      let isSpare = frame.length === 2 && frame[0] + frame[1] === 10 && j === 1;
-      let isStrike = frame.length === 1 && frame[0] === 10;
+      let isSpare = frame[0] + frame[1] === 10 && j === 1 && frameIndex < 9;
+      let isStrike = frame.length === 1 && frame[0] === 10 && frameIndex < 9;
 
-      if (isSpare && !isFinalFrame) {
+      if (isSpare) {
         return frameTotal + roll + this.getSpareBonus(frameIndex);
-      } else if (isStrike && !isFinalFrame) {
+      } else if (isStrike) {
         return frameTotal + roll + this.getStrikeBonus(frameIndex);
       } else {
         return frameTotal + roll;
@@ -87,7 +85,9 @@ export class Bowling {
 
   private invalidStandardFrame(): boolean {
     let lastFrame = this.frames[this.frames.length - 1];
-    return lastFrame.reduce((sum, num) => sum + num) > 10;
+    let total = lastFrame.reduce((sum, num) => sum + num);
+
+    return total > 10;
   }
 
   private invalidFinalFrame(): boolean {
@@ -95,10 +95,6 @@ export class Bowling {
     let total = lastFrame.reduce((sum, num) => sum + num);
 
     return total > 30 || (lastFrame[1] < 10 && total > 20);
-  }
-
-  private gameStarted(): boolean {
-    return this.frames.length > 0;
   }
 
   private gameOver(): boolean {
