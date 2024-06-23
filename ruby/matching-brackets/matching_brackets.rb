@@ -1,13 +1,13 @@
 module Brackets
-  BRAKETS = { '{' => '}', '[' => ']', '(' => ')' }
+  BRAKETS = { "{" => "}", "[" => "]", "(" => ")" }.freeze
 
   def self.paired?(test_string)
     stack = []
-    chars = test_string.each_char do |char|
+    test_string.each_char do |char|
       case char
-      when '{', '[', '('
+      when "{", "[", "("
         stack.push(char)
-      when '}', ']', ')'
+      when "}", "]", ")"
         top = stack.pop
         return false if BRAKETS[top] != char
       end
