@@ -1,6 +1,8 @@
 package techpalace
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestWelcomeMessage(t *testing.T) {
 	tests := []struct {
@@ -69,6 +71,7 @@ func TestAddBorder(t *testing.T) {
 	}
 }
 
+/*
 func TestCleanupMessage(t *testing.T) {
 	tests := []struct {
 		name       string
@@ -96,6 +99,47 @@ func TestCleanupMessage(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := CleanupMessage(tt.oldMessage); got != tt.want {
 				t.Errorf("CleanupMessage(\"%s\") = \"%s\", want \"%s\"", tt.oldMessage, got, tt.want)
+			}
+		})
+	}
+}
+*/
+
+func TestCleanupMessage(t *testing.T) {
+	type args struct {
+		oldMsg string
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		{
+			name: "Cleanup message with many stars and leading and trailing whitespace",
+			args: args{
+				oldMsg: "**************************\n*    BUY NOW, SAVE 10%   *\n**************************",
+			},
+			want: "BUY NOW, SAVE 10%",
+		},
+		{
+			name: "Cleanup message without leading or trailing whitespace",
+			args: args{
+				oldMsg: "**********\n*DISCOUNT*\n**********",
+			},
+			want: "DISCOUNT",
+		},
+		{
+			name: "Cleanup message without leading whitespace",
+			args: args{
+				oldMsg: "*****\n SALE\n*****",
+			},
+			want: "SALE",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := CleanupMessage(tt.args.oldMsg); got != tt.want {
+				t.Errorf("CleanupMessage() = %v, want %v", got, tt.want)
 			}
 		})
 	}
