@@ -17,15 +17,13 @@ export function isValid(isbn: string): boolean {
 
   let chars = isbn.match(/\d|X/g) || [];
 
-  if (chars.length !== 10) {
-    return false;
-  } else {
-    let total = chars.reverse().reduce((runningTotal, num, i) => {
-      let char = chars[i];
-      let value = charValues[char];
-      return runningTotal + (i + 1) * value;
-    }, 0);
+  if (chars.length !== 10) return false;
 
-    return total % 11 === 0;
-  }
+  let total = chars.reverse().reduce((runningTotal, num, i) => {
+    let char = chars[i];
+    let value = charValues[char];
+    return runningTotal + (i + 1) * value;
+  }, 0);
+
+  return total % 11 === 0;
 }
