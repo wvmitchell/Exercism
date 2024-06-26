@@ -15,17 +15,16 @@ const charValues: { [key: string]: number } = {
 export function isValid(isbn: string): boolean {
   if (!isbn.match(/^[0-9|-]*[0-8|X]$/)) return false;
 
-  let chars = isbn.match(/\d|X/g);
-  if (chars?.length !== 10) {
+  let chars = isbn.match(/\d|X/g) || [];
+
+  if (chars.length !== 10) {
     return false;
   } else {
-    let total = 0;
-
-    for (let i = 10; i >= 1; i--) {
-      let char = chars[10 - i];
+    let total = chars.reverse().reduce((runningTotal, num, i) => {
+      let char = chars[i];
       let value = charValues[char];
-      total += i * value;
-    }
+      return runningTotal + (i + 1) * value;
+    }, 0);
 
     return total % 11 === 0;
   }
