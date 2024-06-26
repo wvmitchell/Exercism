@@ -13,13 +13,12 @@ const charValues: { [key: string]: number } = {
 };
 
 export function isValid(isbn: string): boolean {
-  let chars = isbn.match(/\d|X/g);
+  if (!isbn.match(/^[0-9|-]*[0-8|X]$/)) return false;
 
-  if (!isbn.match(/^[0-9|-]*[0-8|X]$/)) {
+  let chars = isbn.match(/\d|X/g);
+  if (chars?.length !== 10) {
     return false;
-  } else if (chars?.length !== 10) {
-    return false;
-  } else if (chars) {
+  } else {
     let total = 0;
 
     for (let i = 10; i >= 1; i--) {
@@ -30,6 +29,4 @@ export function isValid(isbn: string): boolean {
 
     return total % 11 === 0;
   }
-
-  return false;
 }

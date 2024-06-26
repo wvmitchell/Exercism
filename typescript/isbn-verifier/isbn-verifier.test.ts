@@ -57,7 +57,7 @@ describe("ISBN Verifier", () => {
     expect(isValid("3-598-21507")).toBeFalsy();
   });
 
-  it("check digit of X should not be used for 0", () => {
+  it("chetck digit of X should not be used for 0", () => {
     expect(isValid("3-598-21515-X")).toBeFalsy();
   });
 
