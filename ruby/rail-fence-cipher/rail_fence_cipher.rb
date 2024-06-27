@@ -15,7 +15,7 @@ module RailFenceCipher
         placeholder_row.map { |elem| elem ? chars.shift : elem }
       end
 
-    placeholder_matrix[0].zip(*rail_matrix[1..]).flatten.compact.join
+    placeholder_matrix[0].zip(*placeholder_matrix[1..]).flatten.compact.join
   end
 
   def self.railify(string, num_rails)
