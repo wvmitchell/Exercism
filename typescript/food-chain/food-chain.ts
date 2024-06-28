@@ -16,14 +16,14 @@ const animals = [
 export function verse(lines: number): string {
   let [animal, companionLine] = animals[lines - 1];
   let start = `I know an old lady who swallowed a ${animal}.`;
-  let end = getEnding(lines);
+  let end = getEndingLines(lines);
   let ans = [start, companionLine, ...end].join("\n");
+
   return ans;
 }
 
 export function verses(start: number, end: number): string {
   let ans = [];
-
   for (let i = start; i <= end; i++) {
     ans.push(verse(i));
   }
@@ -31,12 +31,12 @@ export function verses(start: number, end: number): string {
   return ans.join("\n");
 }
 
-function getEnding(index: number): string[] {
+function getEndingLines(index: number): string[] {
   if (index === 1 || index === 8) {
     return [""];
   }
-
   let subset = animals.slice(0, index).reverse();
+
   return subset.map((animal: string[], i): string => {
     let swallowedAnimal = animal;
     let toCatchAnimal = subset[i + 1];
