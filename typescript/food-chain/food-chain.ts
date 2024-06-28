@@ -16,8 +16,8 @@ const animals = [
 export function verse(lines: number): string {
   let [animal, companionLine] = animals[lines - 1];
   let start = `I know an old lady who swallowed a ${animal}.`;
-  let middle = animal !== "horse" ? getMiddleLines(lines) : [""];
-  let ans = [start, companionLine, ...middle].join("\n");
+  let end = getEnding(lines);
+  let ans = [start, companionLine, ...end].join("\n");
   return ans;
 }
 
@@ -31,7 +31,11 @@ export function verses(start: number, end: number): string {
   return ans.join("\n");
 }
 
-function getMiddleLines(index: number): string[] {
+function getEnding(index: number): string[] {
+  if (index === 1 || index === 8) {
+    return [""];
+  }
+
   let subset = animals.slice(0, index).reverse();
   return subset.map((animal: string[], i): string => {
     let swallowedAnimal = animal;
@@ -39,6 +43,6 @@ function getMiddleLines(index: number): string[] {
     if (toCatchAnimal) {
       return `She swallowed the ${swallowedAnimal[0]} to catch the ${toCatchAnimal[0]}${toCatchAnimal[2] || ""}.`;
     }
-    return index === 1 ? "" : `${swallowedAnimal[1]}\n`;
+    return `${swallowedAnimal[1]}\n`;
   });
 }
