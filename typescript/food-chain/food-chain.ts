@@ -31,11 +31,11 @@ export function verses(start: number, end: number): string {
   return ans.join("\n");
 }
 
-function getEndingLines(index: number): string[] {
-  if (index === 1 || index === 8) {
+function getEndingLines(verse_number: number): string[] {
+  if (verse_number === 1 || verse_number === 8) {
     return [""];
   }
-  let subset = animals.slice(0, index).reverse();
+  let subset = animals.slice(0, verse_number).reverse();
 
   return subset.map((animal: string[], i): string => {
     let swallowedAnimal = animal;
