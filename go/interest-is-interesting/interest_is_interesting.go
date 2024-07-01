@@ -25,10 +25,6 @@ func AnnualBalanceUpdate(balance float64) float64 {
 
 // YearsBeforeDesiredBalance calculates the minimum number of years required to reach the desired balance.
 func YearsBeforeDesiredBalance(balance, targetBalance float64) int {
-	// interest rate will increase as the balance increases
-	// so we need to calculate the interest rate for each years
-	// and update the balance accordingly
-	// can be done using a counter an a while loop
 	years := 0
 	for balance < targetBalance {
 		balance = AnnualBalanceUpdate(balance)
