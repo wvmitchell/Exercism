@@ -1,5 +1,5 @@
-require 'minitest/autorun'
-require_relative 'two_bucket'
+require "minitest/autorun"
+require_relative "two_bucket"
 
 class TwoBucketTest < Minitest::Test
   def test_measure_using_bucket_one_of_size_3_and_bucket_two_of_size_5_start_with_bucket_one
