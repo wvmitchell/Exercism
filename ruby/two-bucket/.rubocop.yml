@@ -12,3 +12,6 @@ Style/StringLiterals:
 
 Metrics/MethodLength:
   Enabled: false
+
+Metrics/AbcSize:
+  Enabled: false

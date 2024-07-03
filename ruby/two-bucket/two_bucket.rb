@@ -1,10 +1,46 @@
+class Bucket
+  attr_accessor :current_volume
+
+  def initialize(volume)
+    @volume = volume
+    @current_volume = 0
+  end
+
+  def fill
+    @current_volume = @volume
+  end
+
+  def empty
+    @current_volume = 0
+  end
+
+  def pour_into(other_bucket)
+    volume_to_pour = [@current_volume, other_bucket.remaining_volume].min
+    @current_volume -= volume_to_pour
+    other_bucket.current_volume += volume_to_pour
+    [self, other_bucket]
+  end
+
+  def copy
+    Bucket.new(@volume).tap { |bucket| bucket.current_volume = @current_volume }
+  end
+
+  def remaining_volume
+    @volume - @current_volume
+  end
+end
+
 class TwoBucket
   attr_reader :moves, :goal_bucket, :other_bucket
 
   def initialize(bucket_one_volume, bucket_two_volume, goal, start_bucket)
-    @bucket_volumes = { one: bucket_one_volume, two: bucket_two_volume }
     @goal = goal
     @start_bucket = start_bucket
+    @start_state = [
+      Bucket.new(bucket_one_volume),
+      Bucket.new(bucket_two_volume),
+      0
+    ]
     @goal_state = calculate_moves
     @moves ||= @goal_state[2]
     @goal_bucket = @goal_state[0] == @goal ? "one" : "two"
@@ -12,14 +48,8 @@ class TwoBucket
   end
 
   def calculate_moves
-    initial_state =
-      (
-        if @start_bucket == "one"
-          [@bucket_volumes[:one], 0, 1]
-        else
-          [0, @bucket_volumes[:two], 1]
-        end
-      )
+    @start_bucket == "one" ? @start_state[0].fill : @start_state[1].fill
+    initial_state = [@start_state[0].copy, @start_state[1].copy, 1]
     queue = [initial_state]
     visited_states = Set.new
 
@@ -38,33 +68,34 @@ class TwoBucket
   end
 
   def next_states(current_state)
-    bucket_one, bucket_two, moves = current_state
     next_states = []
-
-    # Fill bucket one
-    next_states.push([@bucket_volumes[:one], bucket_two, moves + 1])
-
-    # Fill bucket two
-    next_states.push([bucket_one, @bucket_volumes[:two], moves + 1])
-
-    # Empty bucket one
-    next_states.push([0, bucket_two, moves + 1])
-
-    # Empty bucket two
-    next_states.push([bucket_one, 0, moves + 1])
-
-    # Pour from bucket one to bucket two
-    pour = [bucket_one, bucket_two, moves + 1]
-    pour[0] -= [@bucket_volumes[:two] - bucket_two, bucket_one].min
-    pour[1] += [@bucket_volumes[:two] - bucket_two, bucket_one].min
-    next_states.push(pour)
-
-    # Pour from bucket two to bucket one
-    pour = [bucket_one, bucket_two, moves + 1]
-    pour[1] -= [@bucket_volumes[:one] - bucket_one, bucket_two].min
-    pour[0] += [@bucket_volumes[:one] - bucket_one, bucket_two].min
-    next_states.push(pour)
-
+    number_of_moves = current_state[2] + 1
+    next_states.push(
+      current_state[0].copy.fill,
+      current_state[1].copy,
+      number_of_moves
+    )
+    next_states.push(
+      current_state[0].copy.empty,
+      current_state[1].copy,
+      number_of_moves
+    )
+    next_states.push(
+      current_state[0].copy,
+      current_state[1].copy.fill,
+      number_of_moves
+    )
+    next_states.push(
+      current_state[0].copy,
+      current_state[1].copy.empty,
+      number_of_moves
+    )
+    next_states.push(
+      current_state[0].copy.pour_into(current_state[1].copy) + [number_of_moves]
+    )
+    next_states.push(
+      current_state[1].copy.pour_into(current_state[0].copy) + [number_of_moves]
+    )
     next_states
   end
 
