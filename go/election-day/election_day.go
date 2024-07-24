@@ -22,7 +22,7 @@ func VoteCount(counter *int) int {
 
 // IncrementVoteCount increments the value in a vote counter.
 func IncrementVoteCount(counter *int, increment int) {
-	*counter = *counter + increment
+	*counter += increment
 }
 
 // NewElectionResult creates a new election result.
