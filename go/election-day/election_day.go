@@ -40,9 +40,5 @@ func DisplayResult(result *ElectionResult) string {
 
 // DecrementVotesOfCandidate decrements by one the vote count of a candidate in a map.
 func DecrementVotesOfCandidate(results map[string]int, candidate string) {
-	for name, votes := range results {
-		if name == candidate {
-			results[name] = votes - 1
-		}
-	}
+	results[candidate]--
 }
