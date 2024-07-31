@@ -6,13 +6,9 @@ import (
 	"strconv"
 )
 
-func formatFloat(f float64) string {
-	return strconv.FormatFloat(f, 'f', 1, 64)
-}
-
 // DescribeNumber should return a string describing the number.
 func DescribeNumber(f float64) string {
-	return fmt.Sprintf("This is the number %s", formatFloat(f))
+	return fmt.Sprintf("This is the number %.1f", f)
 }
 
 // NumberBox is the interface for numbers
@@ -23,7 +19,7 @@ type NumberBox interface {
 // DescribeNumberBox should return a string describing the NumberBox.
 func DescribeNumberBox(nb NumberBox) string {
 	float := float64(nb.Number())
-	return fmt.Sprintf("This is a box containing the number %s", formatFloat(float))
+	return fmt.Sprintf("This is a box containing the number %.1f", float)
 }
 
 // FancyNumber holds onto a fancy number
@@ -56,7 +52,7 @@ func ExtractFancyNumber(fnb FancyNumberBox) int {
 // DescribeFancyNumberBox should return a string describing the FancyNumberBox.
 func DescribeFancyNumberBox(fnb FancyNumberBox) string {
 	float := float64(ExtractFancyNumber(fnb))
-	return fmt.Sprintf("This is a fancy box containing the number %s", formatFloat(float))
+	return fmt.Sprintf("This is a fancy box containing the number %.1f", float)
 }
 
 // DescribeAnything should return a string describing whatever it contains.
