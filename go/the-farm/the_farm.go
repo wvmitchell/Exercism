@@ -4,7 +4,6 @@ package thefarm
 import (
 	"errors"
 	"fmt"
-	"strconv"
 )
 
 // DivideFood divides the given amount of food between the given number of cows.
@@ -43,8 +42,7 @@ type InvaildNumCowsError struct {
 }
 
 func (e *InvaildNumCowsError) Error() string {
-	quantityStr := strconv.Itoa(e.Quantity)
-	return fmt.Sprintf("%s cows are invalid: %s", quantityStr, e.Message)
+	return fmt.Sprintf("%d cows are invalid: %s", e.Quantity, e.Message)
 }
 
 // ValidateNumberOfCows validates the quantity of cows
