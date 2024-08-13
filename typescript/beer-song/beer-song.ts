@@ -1,19 +1,24 @@
 export function verse(index: number): string {
-  const standardLine = `${index} bottles of beer on the wall, ${index} bottles of beer.\nTake one down and pass it around, ${
-    index - 1
-  } bottles of beer on the wall.\n`;
-  const thirdToLasLine = `2 bottles of beer on the wall, 2 bottles of beer.\nTake one down and pass it around, 1 bottle of beer on the wall.\n`;
-  const secondToLastLine = `1 bottle of beer on the wall, 1 bottle of beer.\nTake it down and pass it around, no more bottles of beer on the wall.\n`;
+  const [current, next] = [index, index - 1];
+  const itemLabel = current === 1 ? "it" : "one";
+
+  const standardLine = `${bottleDescription(current)} of beer on the wall, ${bottleDescription(current)} of beer.\nTake ${itemLabel} down and pass it around, ${bottleDescription(next)} of beer on the wall.\n`;
   const lastLine = `No more bottles of beer on the wall, no more bottles of beer.\nGo to the store and buy some more, 99 bottles of beer on the wall.\n`;
 
-  if (index > 2) {
+  if (index >= 1) {
     return standardLine;
-  } else if (index === 2) {
-    return thirdToLasLine;
-  } else if (index === 1) {
-    return secondToLastLine;
   } else {
     return lastLine;
+  }
+}
+
+export function bottleDescription(index: number): string {
+  if (index === 1) {
+    return "1 bottle";
+  } else if (index === 0) {
+    return "no more bottles";
+  } else {
+    return `${index} bottles`;
   }
 }
 
