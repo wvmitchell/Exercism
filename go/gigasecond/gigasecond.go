@@ -1,7 +1,6 @@
 // Package gigasecond provides a function to add a gigasecond to a given time
 package gigasecond
 
-// import path for the time package from the standard library
 import "time"
 
 // AddGigasecond adds a gigasecond to the given time
