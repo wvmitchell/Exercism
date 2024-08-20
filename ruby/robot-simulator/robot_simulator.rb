@@ -1,28 +1,33 @@
 class Robot
   attr_reader :coordinates
 
+  # @return [Array<Symbol>]
   VALID_DIRECTIONS = %i[north east south west].freeze
 
-  ##
-  # orient - orients the robot in a given direction
-  # @param [Symbol] direction - the direction to orient the Robot
+  # initialize - initializes a new Robot
+  # @param coordinates [Array<Integer, Integer>] the coordinates to place the Robot
   # @return [nil]
+  def initialize(coordinates = [0, 0])
+    @coordinates = coordinates # @type [Array<Integer, Integer>]
+  end
+
+  # orient - orients the robot in a given direction
+  # @param direction [Symbol] the direction to orient the Robot
+  # @return [Integer]
   def orient(direction)
     raise ArgumentError unless VALID_DIRECTIONS.include?(direction)
 
     @direction_index = VALID_DIRECTIONS.index(direction)
   end
 
-  ##
   # bearing - returns the current bearing of the Robot
   # @return [Symbol] - the current bearing of the Robot
   def bearing
     VALID_DIRECTIONS[@direction_index]
   end
 
-  ##
   # turn_right - turns the robot to the right
-  # @return [nil]
+  # @return [Integer]
   def turn_right
     @direction_index += 1
     @direction_index %= 4
@@ -30,26 +35,25 @@ class Robot
 
   ##
   # turn_left - turns the robot to the left
-  # @return [nil]
+  # @return [Integer]
   def turn_left
     @direction_index -= 1
     @direction_index %= 4
   end
 
-  ##
   # at - places the robot at a given position
-  # @param [Integer] x - the x coordinate
-  # @param [Integer] y - the y coordinate
-  # @return [nil]
+  # @param x [Integer] the x coordinate
+  # @param y [Integer] the y coordinate
+  # @return [Array<Integer>]
   def at(x, y)
     @coordinates = [x, y]
   end
 
-  ##
   # advance - moves the robot forward
-  # @return [nil]
+  # @return [Array<Integer>]
   def advance
-    x, y = @coordinates
+    x = coordinates[0]
+    y = coordinates[1]
 
     case bearing
     when :north
@@ -61,6 +65,8 @@ class Robot
     when :west
       @coordinates = [x - 1, y]
     end
+
+    @coordinates
   end
 end
 
@@ -71,32 +77,30 @@ class Simulator
     "A" => :advance
   }.freeze
 
-  ##
   # instructions takes string command, and parses it into
   # instructions for the robot
-  # @param [String] code - the code to be parsed
-  # @return [Array<Symbol>] - the instructions for the robot
+  # @param code [String] the code to be parsed
+  # @return [Array<Symbol>] the instructions for the robot
   def instructions(code)
     commands = code.split("")
     commands.map { |c| INSTRUCTION_CODES[c] }
   end
 
-  ##
   # place - places a robot at a given postion, facing a given direction
-  # @param [Robot] robot - the robot to place
-  # @param [Integer] x - the x coordintate
-  # @param [Integer] y - the y coordintate
-  # @param [Symbol] direction - the direction to orient the robot
-  # @return [nil]
+  # @param robot [Robot] the robot to place
+  # @param x [Integer] the x coordintate
+  # @param y [Integer] the y coordintate
+  # @param direction [Symbol] the direction to orient the robot
+  # @return [Integer]
   def place(robot, x:, y:, direction:)
     robot.at(x, y)
     robot.orient(direction)
   end
 
-  ##
   # evaluate - evaluates a code string on a Robot
-  # @param [Robot] robot - the robot to evaluate the code on
-  # @param [String] code - the code to evaluate
+  # @param robot [Robot] the robot to evaluate the code on
+  # @param code [String] the code to evaluate
+  # @sg-ignore
   # @return [nil]
   def evaluate(robot, code)
     instructions(code).each { |instruction| robot.public_send(instruction) }
