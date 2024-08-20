@@ -12,13 +12,11 @@ class Minesweeper
   # @param board [Array<string>] Board
   # @return [Array<Array<String>>] 2d Array
   def self.parse_board(board)
-    # parse board into a 2d Array
-    # where each cell is either a mine ('*') or a space (' ')
-    # map through each row and split each row into an array of characters
-    board.map { |row| row.split("") }
+    board.map(&:chars)
   end
 
   # mark_mines method marks mines on the board, and the number of mines surrounding each cell
+  # @sg-ignore
   # @param board [Array<Array<String>>] 2d Array
   # @return [Array<Array<String>>] 2d Array
   def self.mark_mines(board)
