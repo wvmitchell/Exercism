@@ -1,5 +1,5 @@
-require 'minitest/autorun'
-require_relative 'locomotive_engineer'
+require "minitest/autorun"
+require_relative "../locomotive_engineer"
 
 class LocomotiveEngineerTest < Minitest::Test
   def test_get_array_of_wagons_with_a_few_inputs
@@ -84,31 +84,31 @@ class LocomotiveEngineerTest < Minitest::Test
 
   def test_add_missing_stops_a_few_stops
     assert_equal(
-      { from: 'Berlin', to: 'Hamburg', stops: %w[Leipzig Hannover Frankfurt] },
+      { from: "Berlin", to: "Hamburg", stops: %w[Leipzig Hannover Frankfurt] },
       LocomotiveEngineer.add_missing_stops(
-        { from: 'Berlin', to: 'Hamburg' },
-        stop_1: 'Leipzig',
-        stop_2: 'Hannover',
-        stop_3: 'Frankfurt'
+        { from: "Berlin", to: "Hamburg" },
+        stop_1: "Leipzig",
+        stop_2: "Hannover",
+        stop_3: "Frankfurt"
       )
     )
   end
 
   def test_add_missing_stops_with_one_stop
     assert_equal(
-      { from: 'Paris', to: 'London', stops: ['Lille'] },
+      { from: "Paris", to: "London", stops: ["Lille"] },
       LocomotiveEngineer.add_missing_stops(
-        { from: 'Paris', to: 'London' },
-        stop_1: 'Lille'
+        { from: "Paris", to: "London" },
+        stop_1: "Lille"
       )
     )
   end
 
   def test_add_missing_stops_with_zero_stops
     assert_equal(
-      { from: 'New York', to: 'Philadelphia', stops: [] },
+      { from: "New York", to: "Philadelphia", stops: [] },
       LocomotiveEngineer.add_missing_stops(
-        { from: 'New York', to: 'Philadelphia' }
+        { from: "New York", to: "Philadelphia" }
       )
     )
   end
@@ -116,18 +116,18 @@ class LocomotiveEngineerTest < Minitest::Test
   def test_add_missing_stops_with_many_stops
     assert_equal(
       {
-        from: 'Gothenburg',
-        to: 'Copenhagen',
+        from: "Gothenburg",
+        to: "Copenhagen",
         stops: %w[Kungsbacka Varberg Halmstad Angelholm Lund Malmo]
       },
       LocomotiveEngineer.add_missing_stops(
-        { from: 'Gothenburg', to: 'Copenhagen' },
-        stop_1: 'Kungsbacka',
-        stop_2: 'Varberg',
-        stop_3: 'Halmstad',
-        stop_4: 'Angelholm',
-        stop_5: 'Lund',
-        stop_6: 'Malmo'
+        { from: "Gothenburg", to: "Copenhagen" },
+        stop_1: "Kungsbacka",
+        stop_2: "Varberg",
+        stop_3: "Halmstad",
+        stop_4: "Angelholm",
+        stop_5: "Lund",
+        stop_6: "Malmo"
       )
     )
   end
@@ -135,20 +135,20 @@ class LocomotiveEngineerTest < Minitest::Test
   def test_extend_route_information_with_four_extra_inputs
     assert_equal(
       {
-        from: 'Berlin',
-        to: 'Hamburg',
-        timeOfArrival: '12:00',
-        precipitation: '10',
-        temperature: '5',
-        caboose: 'yes'
+        from: "Berlin",
+        to: "Hamburg",
+        timeOfArrival: "12:00",
+        precipitation: "10",
+        temperature: "5",
+        caboose: "yes"
       },
       LocomotiveEngineer.extend_route_information(
-        { from: 'Berlin', to: 'Hamburg' },
+        { from: "Berlin", to: "Hamburg" },
         {
-          timeOfArrival: '12:00',
-          precipitation: '10',
-          temperature: '5',
-          caboose: 'yes'
+          timeOfArrival: "12:00",
+          precipitation: "10",
+          temperature: "5",
+          caboose: "yes"
         }
       )
     )
@@ -157,15 +157,15 @@ class LocomotiveEngineerTest < Minitest::Test
   def test_extend_route_information_with_three_extra_inputs
     assert_equal(
       {
-        from: 'Paris',
-        to: 'London',
-        timeOfArrival: '10:30',
-        temperature: '20',
-        length: '15'
+        from: "Paris",
+        to: "London",
+        timeOfArrival: "10:30",
+        temperature: "20",
+        length: "15"
       },
       LocomotiveEngineer.extend_route_information(
-        { from: 'Paris', to: 'London' },
-        { timeOfArrival: '10:30', temperature: '20', length: '15' }
+        { from: "Paris", to: "London" },
+        { timeOfArrival: "10:30", temperature: "20", length: "15" }
       )
     )
   end
@@ -173,15 +173,15 @@ class LocomotiveEngineerTest < Minitest::Test
   def test_extend_route_information_with_three_extra_inputs_with_different_information
     assert_equal(
       {
-        from: 'Gothenburg',
-        to: 'Copenhagen',
-        precipitation: '1',
-        timeOfArrival: '21:20',
-        temperature: '-6'
+        from: "Gothenburg",
+        to: "Copenhagen",
+        precipitation: "1",
+        timeOfArrival: "21:20",
+        temperature: "-6"
       },
       LocomotiveEngineer.extend_route_information(
-        { from: 'Gothenburg', to: 'Copenhagen' },
-        { precipitation: '1', timeOfArrival: '21:20', temperature: '-6' }
+        { from: "Gothenburg", to: "Copenhagen" },
+        { precipitation: "1", timeOfArrival: "21:20", temperature: "-6" }
       )
     )
   end
