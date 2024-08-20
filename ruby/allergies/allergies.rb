@@ -1,34 +1,24 @@
-require 'pry'
-
 class Allergies
+  ALLERGEN_HASH = {
+      'eggs' => 1,
+      'peanuts' => 2, 
+      'shellfish' => 4,
+      'strawberries' => 8,
+      'tomatoes' => 16,
+      'chocolate' => 32,
+      'pollen' => 64,
+      'cats' => 128,
+  }
+
   def initialize(score)
-    @allergen_hash = create_allergen_hash(score)
+    @score = score
   end
 
   def allergic_to?(allergen)
-    @allergen_hash[allergen] == '1'
+    @score & ALLERGEN_HASH[allergen] > 0
   end
 
   def list
-    @list ||= @allergen_hash.filter do |allergen, positive|
-      positive == '1'
-    end.keys
-  end
-
-  private
-
-  def create_allergen_hash(score)
-    digits = score.to_s(2).reverse.split('')[0..9]
-    allergens = [
-      'eggs',
-      'peanuts', 
-      'shellfish',
-      'strawberries',
-      'tomatoes',
-      'chocolate',
-      'pollen',
-      'cats',
-    ]
-    allergens.zip(digits).to_h
+    @list ||= ALLERGEN_HASH.keys.filter {|allergen| allergic_to?(allergen)}
   end
 end
