@@ -1,12 +1,10 @@
 // Package diffsquares provides functions to calculate the difference between the square of the sum and the sum of the squares of the first N natural numbers.
 package diffsquares
 
-import "math"
-
 // SquareOfSum returns the square of the sum of the first N natural numbers.
 func SquareOfSum(n int) int {
 	sum := (n * (1 + n)) / 2
-	return int(math.Pow(float64(sum), float64(2)))
+	return sum * sum
 }
 
 // SumOfSquares returns the sum of the squares of the first N natural numbers.
