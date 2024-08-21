@@ -20,6 +20,7 @@ class SecretHandshake
   # @param code [Integer] the code to be used to generate the handshake
   # @return [NilClass]
   def initialize(code)
+    code = code.is_a?(Integer) ? code : 0
     @commands = parse_code(code)
   end
 
@@ -28,7 +29,6 @@ class SecretHandshake
   # @param code [Integer] the code to be used to generate the handshake
   # @return [Array<String>] the commands that make up the handshake
   def parse_code(code)
-    code = code.is_a?(Integer) ? code : 0
     list =
       POSSIBLE_COMMANDS
       .map { |int, command| (code & int).positive? ? command : nil }
