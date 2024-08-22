@@ -29,10 +29,12 @@ class WordProblem
   # calculate method performs the operations on the digits
   # @return [Integer]
   def calculate
-    result = @digits.shift
-    while @operations.any?
-      opp = OPERATIONS_HASH[@operations.shift]
-      result = result.send(opp, @digits.shift)
+    digits_copy = @digits.dup
+    ops_copy = @operations.dup
+    result = digits_copy.shift
+    while ops_copy.any?
+      opp = OPERATIONS_HASH[ops_copy.shift]
+      result = result.send(opp, digits_copy.shift)
     end
     result
   end
