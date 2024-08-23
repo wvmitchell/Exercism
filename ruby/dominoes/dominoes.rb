@@ -1,5 +1,3 @@
-require "pry"
-
 module Dominoes
   def self.chain?(dominoes)
     node_edge_counts =
