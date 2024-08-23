@@ -1,20 +1,22 @@
 // Package resistorcolor provides functions for getting the color of a resistor
 package resistorcolor
 
+var colors = []string{
+	"black",
+	"brown",
+	"red",
+	"orange",
+	"yellow",
+	"green",
+	"blue",
+	"violet",
+	"grey",
+	"white",
+}
+
 // Colors returns the list of all colors.
 func Colors() []string {
-	return []string{
-		"black",
-		"brown",
-		"red",
-		"orange",
-		"yellow",
-		"green",
-		"blue",
-		"violet",
-		"grey",
-		"white",
-	}
+	return colors
 }
 
 // ColorCode returns the resistance value of the given color.
