@@ -19,10 +19,12 @@ type DNA []rune
 func (d DNA) Counts() (Histogram, error) {
 	h := newHistogram()
 	for _, nucleotide := range d {
-		if _, ok := h[nucleotide]; !ok {
-			return nil, fmt.Errorf("invalid nucleotide: %v", nucleotide)
+		switch nucleotide {
+		case 'A', 'C', 'G', 'T':
+			h[nucleotide]++
+		default:
+			return nil, fmt.Errorf("invalid nucleotide: %q", nucleotide)
 		}
-		h[nucleotide]++
 	}
 	return h, nil
 }
