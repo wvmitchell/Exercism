@@ -1,7 +1,24 @@
-=begin
-Write your code for the 'Binary Search Tree' exercise in this file. Make the tests in
-`binary_search_tree_test.rb` pass.
+class Bst
+  include Enumerable
+  attr_reader :data, :left, :right
 
-To get started with TDD, see the `README.md` file in your
-`ruby/binary-search-tree` directory.
-=end
+  def initialize(value)
+    @data = value
+  end
+
+  def each(&block)
+    return to_enum(:each) unless block_given?
+
+    left && left.each(&block)
+    block.call(data)
+    right && right.each(&block)
+  end
+
+  def insert(value)
+    if value > data
+      right ? right.insert(value) : @right = Bst.new(value)
+    else
+      left ? left.insert(value) : @left = Bst.new(value)
+    end
+  end
+end
