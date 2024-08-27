@@ -9,9 +9,9 @@ class Bst
   def each(&block)
     return to_enum(:each) unless block_given?
 
-    left && left.each(&block)
-    block.call(data)
-    right && right.each(&block)
+    left&.each(&block)
+    yield data
+    right&.each(&block)
   end
 
   def insert(value)
