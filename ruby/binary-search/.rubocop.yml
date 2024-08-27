@@ -12,3 +12,12 @@ Style/StringLiterals:
 
 Metrics/MethodLength:
   Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
+
+Naming/MethodParameterName:
+  Enabled: false
+
+Layout/SpaceAroundOperators:
+  EnforcedStyleForExponentOperator: space
