@@ -25,7 +25,7 @@ class Garden
   end
 
   def method_missing(method, *args)
-    super unless CHILDREN.include?(method)
+    super unless respond_to?(method)
 
     self
       .class
@@ -37,8 +37,8 @@ class Garden
     send(method)
   end
 
-  def respond_to_missing?(method)
-    super unless CHILDREN.include?(method)
+  def respond_to_missing?(method, include_private = false)
+    CHILDREN.include?(method) || super
   end
 
   private
