@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # A sample Guardfile
 # More info at https://github.com/guard/guard#readme
 
@@ -17,10 +15,17 @@
 #
 # and, you'll have to watch "config/Guardfile" instead of "Guardfile"
 
+# @sg-ignore
 guard :minitest do
   # with Minitest::Unit
-  watch(/^(.*)\.rb$/) { 'test/simple_linked_list_test.rb' }
-  watch(/^(.*)_test.rb$/) { 'test/simple_linked_list_test.rb' }
+  # watch(%r{^test/(.*)/?test_(.*)\.rb$})
+  # watch(%r{^lib/(.*/)?([^/]+)\.rb$}) { |m| "test/#{m[1]}test_#{m[2]}.rb" }
+  # watch(%r{^test/test_helper\.rb$}) { 'test' }
+  #
+  # @sg-ignore
+  watch("simple_linked_list.rb") { "test/simple_linked_list_test.rb" }
+  # @sg-ignore
+  watch("test/simple_linked_list_test.rb") { "test/simple_linked_list_test.rb" }
 
   # with Minitest::Spec
   # watch(%r{^spec/(.*)_spec\.rb$})
