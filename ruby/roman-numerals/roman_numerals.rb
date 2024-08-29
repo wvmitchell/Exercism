@@ -16,11 +16,11 @@ class Integer
   }.freeze
 
   def to_roman
-    copy = dup
+    num = self
     ROMAN_NUMERALS.each_with_object("") do |(arabic, roman), result|
-      while copy >= arabic
+      while num >= arabic
         result << roman
-        copy -= arabic
+        num -= arabic
       end
     end
   end
