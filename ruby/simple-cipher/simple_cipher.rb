@@ -4,7 +4,7 @@ class Cipher
   LETTERS = ("a".."z").to_a
 
   def initialize(key = nil)
-    raise ArgumentError if invalid_key(key)
+    raise ArgumentError if invalid_key?(key)
 
     @key = key || make_key
   end
@@ -41,7 +41,7 @@ class Cipher
     ("a".."z").to_a.sample(10).join
   end
 
-  def invalid_key(key)
+  def invalid_key?(key)
     key&.match(/[A-Z0-9]/) || key == ""
   end
 end
