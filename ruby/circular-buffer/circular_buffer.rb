@@ -1,6 +1,7 @@
 class CircularBuffer < Array
   def initialize(capacity)
     @capacity = capacity
+    super(0)
   end
 
   def read
