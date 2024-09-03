@@ -1,32 +1,27 @@
-class CircularBuffer
-  def initialize(size)
-    @size = size
-    @buffer = []
+class CircularBuffer < Array
+  def initialize(capacity)
+    @capacity = capacity
   end
 
   def read
-    raise BufferEmptyException if @buffer.empty?
+    raise BufferEmptyException if empty?
 
-    @buffer.shift
+    shift
   end
 
   def write(value)
-    raise BufferFullException if @buffer.size == @size
+    raise BufferFullException if count == @capacity
 
-    @buffer << value
+    push(value)
   end
 
   def write!(value)
-    if @buffer.size < @size
+    if count < @capacity
       write(value)
     else
-      @buffer.shift
-      @buffer << value
+      shift
+      push(value)
     end
-  end
-
-  def clear
-    @buffer.clear
   end
 
   class BufferEmptyException < StandardError
