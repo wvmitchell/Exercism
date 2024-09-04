@@ -17,7 +17,7 @@ class School
     grades.values.flatten
   end
 
-  def grade(val)
-    grades[val]
+  def grade(year)
+    grades[year]
   end
 end
