@@ -2,7 +2,7 @@ class School
   attr_reader :grades
 
   def initialize
-    @grades = { 1 => [], 2 => [], 3 => [], 4 => [], 5 => [], 6 => [], 7 => [] }
+    @grades = (1..7).to_h { |i| [i, []] }
   end
 
   def add(student, grade)
