@@ -6,13 +6,11 @@ class School
   end
 
   def add(student, grade)
-    if roster.include?(student)
-      false
-    else
-      @grades[grade] << student
-      @grades[grade].sort!
-      true
-    end
+    return false if roster.include?(student)
+
+    @grades[grade] << student
+    @grades[grade].sort!
+    true
   end
 
   def roster
