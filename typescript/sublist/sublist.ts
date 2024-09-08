@@ -1,11 +1,11 @@
-export class List {
-  elements: number[];
+export class List<T = any> {
+  elements: T[] = [];
 
-  constructor(...elements: number[]) {
+  constructor(...elements: T[]) {
     this.elements = elements;
   }
 
-  compare(list: List): string {
+  compare(list: List<T>): string {
     if (this.equals(list)) {
       return "equal";
     } else if (this.sublist(list)) {
@@ -16,14 +16,14 @@ export class List {
     return "unequal";
   }
 
-  equals(list: List): boolean {
+  equals(list: List<T>): boolean {
     return (
       this.elements.length === list.elements.length &&
       equalArrays(this.elements, list.elements)
     );
   }
 
-  sublist(list: List): boolean {
+  sublist(list: List<T>): boolean {
     const len = this.elements.length;
     return list.elements.some((_, index) => {
       const sublistCandidate = list.elements.slice(index, index + len);
@@ -32,7 +32,7 @@ export class List {
   }
 }
 
-function equalArrays(arr1: number[], arr2: number[]): boolean {
+function equalArrays<T>(arr1: T[], arr2: T[]): boolean {
   return (
     arr1.length === arr2.length &&
     arr1.every((value, index) => {
