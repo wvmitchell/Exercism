@@ -243,4 +243,14 @@ class CustomSetTest < Minitest::Test
     expected = CustomSet.new [3, 2, 1]
     assert_equal expected, set1.union(set2)
   end
+
+  def test_a_set_has_size
+    set = CustomSet.new [1, 2, 3]
+    assert_equal 3, set.size
+  end
+
+  def test_an_empty_set_has_size_zero
+    set = CustomSet.new []
+    assert_equal 0, set.size
+  end
 end

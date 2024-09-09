@@ -5,6 +5,8 @@ class CustomSet
     @set = Set.new(elements)
   end
 
+  def size = set.size
+
   def empty? = set.empty?
 
   def member?(element) = set.member? element
