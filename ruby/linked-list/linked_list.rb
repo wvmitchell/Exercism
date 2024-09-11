@@ -1,5 +1,3 @@
-require 'pry'
-
 class Deque
   attr_accessor :head, :tail
 
