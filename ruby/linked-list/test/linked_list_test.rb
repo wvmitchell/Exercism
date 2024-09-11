@@ -13,6 +13,54 @@ class DequeTest < Minitest::Test
     assert_equal 10, deque.pop
   end
 
+  def test_push_nil
+    deque = Deque.new
+    deque.push(nil)
+    assert_nil deque.tail.value
+    assert_nil deque.head.value
+  end
+
+  def test_push_string
+    deque = Deque.new
+    deque.push("hello")
+    assert_equal "hello", deque.tail.value
+    assert_equal "hello", deque.head.value
+
+    deque.push("world")
+    assert_equal "world", deque.tail.value
+    assert_equal "hello", deque.head.value
+  end
+
+  def test_push_array
+    deque = Deque.new
+    deque.push([1, 2, 3])
+    assert_equal [1, 2, 3], deque.tail.value
+    assert_equal [1, 2, 3], deque.head.value
+
+    deque.push([4, 5])
+    assert_equal [4, 5], deque.tail.value
+    assert_equal [1, 2, 3], deque.head.value
+  end
+
+  def test_push_hash
+    deque = Deque.new
+    deque.push({ key: "value" })
+    assert_equal({ key: "value" }, deque.tail.value)
+    assert_equal({ key: "value" }, deque.head.value)
+
+    deque.push({ another_key: "another_value" })
+    assert_equal({ another_key: "another_value" }, deque.tail.value)
+    assert_equal({ key: "value" }, deque.head.value)
+  end
+
+  def test_push_object
+    deque = Deque.new
+    obj = Object.new
+    deque.push(obj)
+    assert_equal obj, deque.tail.value
+    assert_equal obj, deque.head.value
+  end
+
   def test_push_shift
     deque = Deque.new
     deque.push(10)
