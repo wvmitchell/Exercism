@@ -23,9 +23,9 @@ guard :minitest do
   # watch(%r{^test/test_helper\.rb$}) { 'test' }
   #
   # @sg-ignore
-  watch("circular_buffer.rb") { "test/circular_buffer_test.rb" }
+  watch("poker.rb") { "test/poker_test.rb" }
   # @sg-ignore
-  watch("test/circular_buffer_test.rb") { "test/circular_buffer_test.rb" }
+  watch("test/poker_test.rb") { "test/poker_test.rb" }
 
   # with Minitest::Spec
   # watch(%r{^spec/(.*)_spec\.rb$})

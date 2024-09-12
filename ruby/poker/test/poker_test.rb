@@ -1,21 +1,21 @@
 require 'minitest/autorun'
-require_relative 'poker'
+require 'minitest/reporters'
+require_relative '../poker'
+
+Minitest::Reporters.use!
 
 class PokerTest < Minitest::Test
   def test_single_hand_always_wins
-    # skip
     hands = [%w[4S 5S 7H 8D JC]]
     assert_equal [%w[4S 5S 7H 8D JC]], Poker.new(hands).best_hand
   end
 
   def test_highest_card_out_of_all_hands_wins
-    skip
     hands = [%w[4D 5S 6S 8D 3C], %w[2S 4C 7S 9H 10H], %w[3S 4S 5D 6H JH]]
     assert_equal [%w[3S 4S 5D 6H JH]], Poker.new(hands).best_hand
   end
 
   def test_a_tie_has_multiple_winners
-    skip
     hands = [%w[4D 5S 6S 8D 3C], %w[2S 4C 7S 9H 10H], %w[3S 4S 5D 6H JH], %w[3H 4H 5C 6C JD]]
     assert_equal [%w[3S 4S 5D 6H JH], %w[3H 4H 5C 6C JD]], Poker.new(hands).best_hand
   end
