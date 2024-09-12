@@ -26,85 +26,71 @@ class PokerTest < Minitest::Test
   end
 
   def test_one_pair_beats_high_card
-    skip
     hands = [%w[4S 5H 6C 8D KH], %w[2S 4H 6S 4D JH]]
     assert_equal [%w[2S 4H 6S 4D JH]], Poker.new(hands).best_hand
   end
 
   def test_highest_pair_wins
-    skip
     hands = [%w[4S 2H 6S 2D JH], %w[2S 4H 6C 4D JD]]
     assert_equal [%w[2S 4H 6C 4D JD]], Poker.new(hands).best_hand
   end
 
   def test_two_pairs_beats_one_pair
-    skip
     hands = [%w[2S 8H 6S 8D JH], %w[4S 5H 4C 8C 5C]]
     assert_equal [%w[4S 5H 4C 8C 5C]], Poker.new(hands).best_hand
   end
 
   def test_both_hands_have_two_pairs_highest_ranked_pair_wins
-    skip
     hands = [%w[2S 8H 2D 8D 3H], %w[4S 5H 4C 8S 5D]]
     assert_equal [%w[2S 8H 2D 8D 3H]], Poker.new(hands).best_hand
   end
 
   def test_both_hands_have_two_pairs_with_the_same_highest_ranked_pair_tie_goes_to_low_pair
-    skip
     hands = [%w[2S QS 2C QD JH], %w[JD QH JS 8D QC]]
     assert_equal [%w[JD QH JS 8D QC]], Poker.new(hands).best_hand
   end
 
   def test_both_hands_have_two_identically_ranked_pairs_tie_goes_to_remaining_card_kicker
-    skip
     hands = [%w[JD QH JS 8D QC], %w[JS QS JC 2D QD]]
     assert_equal [%w[JD QH JS 8D QC]], Poker.new(hands).best_hand
   end
 
   def test_both_hands_have_two_pairs_that_add_to_the_same_value_win_goes_to_highest_pair
-    skip
     hands = [%w[6S 6H 3S 3H AS], %w[7H 7S 2H 2S AC]]
     assert_equal [%w[7H 7S 2H 2S AC]], Poker.new(hands).best_hand
   end
 
   def test_two_pairs_first_ranked_by_largest_pair
-    skip
     hands = [%w[5C 2S 5S 4H 4C], %w[6S 2S 6H 7C 2C]]
     assert_equal [%w[6S 2S 6H 7C 2C]], Poker.new(hands).best_hand
   end
 
   def test_three_of_a_kind_beats_two_pair
-    skip
     hands = [%w[2S 8H 2H 8D JH], %w[4S 5H 4C 8S 4H]]
     assert_equal [%w[4S 5H 4C 8S 4H]], Poker.new(hands).best_hand
   end
 
   def test_both_hands_have_three_of_a_kind_tie_goes_to_highest_ranked_triplet
-    skip
     hands = [%w[2S 2H 2C 8D JH], %w[4S AH AS 8C AD]]
     assert_equal [%w[4S AH AS 8C AD]], Poker.new(hands).best_hand
   end
 
   def test_with_multiple_decks_two_players_can_have_same_three_of_a_kind_ties_go_to_highest_remaining_cards
-    skip
     hands = [%w[4S AH AS 7C AD], %w[4S AH AS 8C AD]]
     assert_equal [%w[4S AH AS 8C AD]], Poker.new(hands).best_hand
   end
 
   def test_a_straight_beats_three_of_a_kind
-    skip
     hands = [%w[4S 5H 4C 8D 4H], %w[3S 4D 2S 6D 5C]]
     assert_equal [%w[3S 4D 2S 6D 5C]], Poker.new(hands).best_hand
   end
 
   def test_aces_can_end_a_straight_10_j_q_k_a
-    skip
     hands = [%w[4S 5H 4C 8D 4H], %w[10D JH QS KD AC]]
     assert_equal [%w[10D JH QS KD AC]], Poker.new(hands).best_hand
   end
 
   def test_aces_can_start_a_straight_a_2_3_4_5
-    skip
     hands = [%w[4S 5H 4C 8D 4H], %w[4D AH 3S 2D 5C]]
     assert_equal [%w[4D AH 3S 2D 5C]], Poker.new(hands).best_hand
   end

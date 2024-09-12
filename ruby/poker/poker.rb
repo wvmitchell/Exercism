@@ -1,33 +1,109 @@
 require 'pry'
 
 CARD_VALUES = {
-  '2' => 0,
-  '3' => 1,
-  '4' => 2,
-  '5' => 3,
-  '6' => 4,
-  '7' => 5,
-  '8' => 6,
-  '9' => 7,
-  '10' => 8,
-  'J' => 9,
-  'Q' => 10,
-  'K' => 11,
-  'A' => 12
+  '2' => 1,
+  '3' => 2,
+  '4' => 3,
+  '5' => 4,
+  '6' => 5,
+  '7' => 6,
+  '8' => 7,
+  '9' => 8,
+  '10' => 9,
+  'J' => 10,
+  'Q' => 11,
+  'K' => 12,
+  'A' => 13
 }.freeze
 
 class Poker
-  attr_reader :hands
+  include Enumerable
 
   def initialize(hands)
-    @hands = hands
+    @hands = hands.map { |h| Hand.new(h) }
+  end
+
+  def each(&block)
+    @hands.each(&block)
   end
 
   def best_hand
-    [hands.max_by { |hand| high_card(hand) }]
+    max_score = max.score
+    select { |hand| hand.score == max_score }
+      .map(&:to_s)
+  end
+end
+
+class Hand
+  include Enumerable
+  include Comparable
+
+  attr_reader :cards
+
+  def initialize(cards)
+    @cards = cards.map { |c| Card.new(c) }
   end
 
-  def high_card(hand)
-    hand.max_by { |card| CARD_VALUES[card[0..-2]] }
+  def each(&block)
+    @cards.each(&block)
+  end
+
+  def <=>(other)
+    score <=> other.score
+  end
+
+  def to_s
+    map(&:to_s)
+  end
+
+  def score
+    if straight
+      10_000 * high_cards
+    elsif three_of_a_kind
+      1000 * high_cards
+    elsif two_pair
+      100 * high_cards
+    elsif pair
+      10 * high_cards
+    else
+      high_cards
+    end
+  end
+
+  def high_cards
+    cards.sort.map.with_index { |card, index| card.value ** (index + 1) }.sum
+  end
+
+  def pair
+    uniq(&:value).count == count - 1
+  end
+
+  def two_pair
+    uniq(&:value).count == count - 2
+  end
+
+  def three_of_a_kind
+    any? do |card|
+      count do |c|
+        c.value == card.value
+      end == 3
+    end
+  end
+
+  def straight; end
+end
+
+class Card
+  include Comparable
+
+  attr_reader :value, :to_s
+
+  def initialize(card)
+    @to_s = card
+    @value = CARD_VALUES[card[0..-2]]
+  end
+
+  def <=>(other)
+    value <=> other.value
   end
 end
