@@ -21,7 +21,6 @@ class PokerTest < Minitest::Test
   end
 
   def test_multiple_hands_with_the_same_high_cards_tie_compares_next_highest_ranked_down_to_last_card
-    skip
     hands = [%w[3S 5H 6S 8D 7H], %w[2S 5D 6D 8C 7S]]
     assert_equal [%w[3S 5H 6S 8D 7H]], Poker.new(hands).best_hand
   end
