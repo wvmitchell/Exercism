@@ -96,19 +96,16 @@ class PokerTest < Minitest::Test
   end
 
   def test_aces_cannot_be_in_the_middle_of_a_straight_q_k_a_2_3
-    skip
     hands = [%w[2C 3D 7H 5H 2S], %w[QS KH AC 2D 3S]]
     assert_equal [%w[2C 3D 7H 5H 2S]], Poker.new(hands).best_hand
   end
 
   def test_both_hands_with_a_straight_tie_goes_to_highest_ranked_card
-    skip
     hands = [%w[4S 6C 7S 8D 5H], %w[5S 7H 8S 9D 6H]]
     assert_equal [%w[5S 7H 8S 9D 6H]], Poker.new(hands).best_hand
   end
 
   def test_even_though_an_ace_is_usually_high_a_5_high_straight_is_the_lowest_scoring_straight
-    skip
     hands = [%w[2H 3C 4D 5D 6H], %w[4S AH 3S 2D 5H]]
     assert_equal [%w[2H 3C 4D 5D 6H]], Poker.new(hands).best_hand
   end

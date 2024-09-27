@@ -58,13 +58,13 @@ class Hand
 
   def score
     if straight
-      10_000 * high_cards
+      100_000 * high_cards
     elsif three_of_a_kind
-      1000 * high_cards
+      10_000 * high_cards
     elsif two_pair
-      100 * high_cards
+      1000 * high_cards
     elsif pair
-      10 * high_cards
+      100 * high_cards
     else
       high_cards
     end
@@ -90,7 +90,15 @@ class Hand
     end
   end
 
-  def straight; end
+  def straight
+    values = map(&:value).sort
+
+    if values.include?(13)
+      [[1, 2, 3, 4, 13], [9, 10, 11, 12, 13]].include?(values)
+    else
+      values.each_cons(2).all? { |a, b| b == a + 1 }
+    end
+  end
 end
 
 class Card
