@@ -58,13 +58,13 @@ class Hand
 
   def score
     if straight
-      100_000 * high_cards
-    elsif three_of_a_kind
       10_000 * high_cards
+    elsif three_of_a_kind
+      1_000 * high_cards
     elsif two_pair
-      1000 * high_cards
-    elsif pair
       100 * high_cards
+    elsif pair
+      10 * high_cards
     else
       high_cards
     end
